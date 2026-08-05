@@ -15,39 +15,39 @@ const initialMessages: Message[] = [
   {
     id: 1,
     from: "freelancer",
-    text: "Halo! Revisi mockup logo tahap pertama sudah saya selesaikan. Saya menambahkan aksen warna 'Bright Orange' agar sesuai dengan konsep energi mahasiswa yang kita diskusikan kemarin.",
+    text: "Halo Pak M. ARIF! Saya Aditya Pratama dari Universitas Indonesia. Desain wireframe & mockup UI tahap pertama untuk Redesign Website Batik Nusantara Store sudah selesai saya upload.",
     time: "14:15",
   },
   {
     id: 2,
     from: "freelancer",
-    file: { name: "EduTech_Identity_V2.pdf", size: "4.2 MB", type: "pdf" },
+    file: { name: "BatikNusantara_Website_UI_V2.fig", size: "8.4 MB", type: "figma" },
     time: "14:16",
   },
   {
     id: 3,
     from: "client",
-    text: "Keren sekali hasilnya! Saya sangat suka penggunaan oranye-nya, terasa sangat vibrant. Bisa tolong cek kembali bagian tipografi pada tagline? Apakah bisa dibuat sedikit lebih tebal?",
+    text: "Keren sekali hasilnya, Aditya! Saya dan tim sangat suka pengintegrasian motif batik modernnya. Pembayaran milestone 2 sebesar Rp 6.750.000 sudah kami tempatkan di sistem Escrow.",
     time: "14:18",
   },
   {
     id: 4,
     from: "freelancer",
-    text: "Tentu, saya mengerti. Saya akan mencoba beberapa variasi weight untuk font Plus Jakarta Sans pada tagline tersebut agar terlihat lebih kokoh.",
+    text: "Terima kasih banyak Pak! Saya akan langsung melanjutkan pengembangan komponen Next.js dan integrasi katalog produk batik.",
     time: "14:20",
   },
   {
     id: 5,
     from: "system",
-    text: "Freelancer baru saja menyelesaikan 75% milestone. Anda dapat memberikan feedback akhir sekarang.",
+    text: "Dana Escrow Milestone 2 sebesar Rp 6.750.000 telah diamankan oleh SkillRent Security.",
     time: "14:22",
   },
 ];
 
 const conversations = [
-  { id: 1, name: "Farhan Maulana", preview: "Revisi mockup logo sudah saya...", time: "14:20", active: true, online: true },
-  { id: 2, name: "Siti Aminah", preview: "Tolong lampirkan invoice ya.", time: "Kemarin", active: false, online: false },
-  { id: 3, name: "Budi Santoso", preview: "Ok, saya tunggu kabar baiknya.", time: "Senin", active: false, online: false },
+  { id: 1, name: "Aditya Pratama (UI)", preview: "Terima kasih banyak Pak! Saya akan...", time: "14:20", active: true, online: true },
+  { id: 2, name: "Siti Aminah (ITB)", preview: "Desain logo EduTech V2 siap diperiksa.", time: "Kemarin", active: false, online: true },
+  { id: 3, name: "Rizky Ramadhan (UGM)", preview: "Integrasi API backend sudah siap dites.", time: "Senin", active: false, online: false },
 ];
 
 export default function ChatPage({ params }: { params: Promise<{ id: string }> }) {

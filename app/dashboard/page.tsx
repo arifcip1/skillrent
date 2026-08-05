@@ -45,18 +45,18 @@ const milestonesFreelancer = [
 const clientProjects = [
   {
     id: "1",
-    title: "Desain Logo & Identitas Brand Startup EduTech",
-    freelancerName: "Aris Setiawan (Universitas Indonesia)",
-    status: "Milestone 2: Review Draft Logo",
-    budget: "Rp 5.000.000",
+    title: "Redesign Website UMKM Batik Nusantara",
+    freelancerName: "Aditya Pratama (Universitas Indonesia)",
+    status: "Milestone 2: UI Design Development (Paid in Escrow)",
+    budget: "Rp 15.000.000",
     orderId: "1",
   },
   {
     id: "2",
-    title: "Redesign Website Marketplace UMKM",
-    freelancerName: "Arjun Prasetya (ITB)",
-    status: "Milestone 1: Wireframing",
-    budget: "Rp 15.000.000",
+    title: "Desain Logo & Identitas Brand Startup EduTech",
+    freelancerName: "Siti Aminah (ITB)",
+    status: "Milestone 1: Konsep & Wireframes",
+    budget: "Rp 4.500.000",
     orderId: "1",
   },
 ];
