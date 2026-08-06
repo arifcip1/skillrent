@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description:
     "Platform freelance khusus mahasiswa terverifikasi. Kualitas profesional, harga mahasiswa, didukung kecerdasan buatan.",
   keywords: ["freelance", "mahasiswa", "terverifikasi", "kampus", "SkillRent"],
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 import { AuthProvider } from "@/lib/AuthContext";
