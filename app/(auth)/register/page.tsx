@@ -177,10 +177,10 @@ export default function RegisterPage() {
         setLocalProfile({ ...clientProfile, id: data.user.id });
       }
 
-      setSuccessMsg("Pendaftaran akun Klien berhasil! Mengarahkan ke dashboard...");
+      setSuccessMsg("Pendaftaran akun Klien berhasil! Mengarahkan ke Telusuri Jasa...");
       setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
+        router.push("/browse");
+      }, 800);
     } catch (err: any) {
       setErrorMsg("Terjadi kesalahan: " + (err.message || ""));
     } finally {

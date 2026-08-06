@@ -50,24 +50,37 @@ export default function LoginPage() {
             .eq("id", data.user.id)
             .single();
 
+          const meta = data.user.user_metadata || {};
+          const userRole = prof?.role || meta.role || "freelancer";
+
           if (prof) {
             setLocalProfile(prof as any);
           } else {
-            const meta = data.user.user_metadata || {};
             setLocalProfile({
               id: data.user.id,
               full_name: meta.full_name || email.split("@")[0],
               email: email,
               campus_email: meta.campus_email,
               university: meta.university || "Universitas Indonesia",
-              role: meta.role || "freelancer",
+              role: userRole as "freelancer" | "client",
             });
           }
+
+          // Clear stale search history / filters
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("skillrent_search_history");
+          }
+
+          const targetRoute = userRole === "client" ? "/browse" : "/dashboard";
+          const routeMsg = userRole === "client" 
+            ? "Login berhasil! Mengarahkan ke Telusuri Jasa..." 
+            : "Login berhasil! Mengarahkan ke Dashboard...";
+
+          setSuccessMsg(routeMsg);
+          setTimeout(() => {
+            router.push(targetRoute);
+          }, 800);
         }
-        setSuccessMsg("Login berhasil! Mengarahkan ke dashboard...");
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 1000);
       }
     } catch (err: any) {
       setErrorMsg("Terjadi kesalahan saat masuk. " + (err.message || ""));

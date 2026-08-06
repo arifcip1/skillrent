@@ -55,11 +55,19 @@ const SAMPLE_GIGS = [
 ];
 
 export default function BrowsePage() {
-  const [searchQuery, setSearchQuery] = useState("Logo Design");
-  const [selectedUnivs, setSelectedUnivs] = useState<string[]>(["Universitas Indonesia"]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUnivs, setSelectedUnivs] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>("Semua Tipe");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+
+  const handleResetFilters = () => {
+    setSearchQuery("");
+    setSelectedUnivs([]);
+    setSelectedType("Semua Tipe");
+    setMinPrice("");
+    setMaxPrice("");
+  };
 
   const toggleUniv = (univ: string) => {
     setSelectedUnivs((prev) =>
@@ -84,16 +92,16 @@ export default function BrowsePage() {
                   letterSpacing: "-0.01em",
                 }}
               >
-                Hasil Pencarian untuk &quot;{searchQuery}&quot;
+                {searchQuery ? `Hasil Pencarian untuk "${searchQuery}"` : "Telusuri Layanan Bakat Mahasiswa"}
               </h1>
               <p className="text-[16px] leading-[24px]" style={{ color: "#5d3f3c" }}>
-                Dapatkan logo profesional dari mahasiswa berbakat di universitas terbaik.
+                Dapatkan layanan profesional karya mahasiswa berbakat dari universitas ternama.
               </p>
             </div>
 
-            {/* Quick Search Bar */}
-            <div className="w-full md:w-80">
-              <div className="relative">
+            {/* Quick Search Bar & Reset */}
+            <div className="w-full md:w-auto flex items-center gap-3">
+              <div className="relative w-full md:w-80">
                 <span
                   className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px]"
                   style={{ color: "#5d3f3c" }}
@@ -104,15 +112,26 @@ export default function BrowsePage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari jasa..."
+                  placeholder="Cari jasa, kategori, atau nama..."
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl text-[14px] outline-none border transition-all"
                   style={{
-                    background: "#f4f3f5",
+                    background: "#ffffff",
                     borderColor: "#e7bdb8",
                     color: "#1a1c1e",
                   }}
                 />
               </div>
+
+              {(searchQuery || selectedUnivs.length > 0 || minPrice || maxPrice) && (
+                <button
+                  onClick={handleResetFilters}
+                  className="px-4 py-2.5 rounded-xl border text-[13px] font-semibold flex items-center gap-1.5 shrink-0 transition-colors hover:bg-gray-100"
+                  style={{ borderColor: "#b90014", color: "#b90014" }}
+                >
+                  <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+                  Reset Filter
+                </button>
+              )}
             </div>
           </div>
         </div>
