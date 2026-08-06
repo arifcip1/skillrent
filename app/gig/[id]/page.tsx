@@ -273,7 +273,7 @@ export default function GigDetailPage({ params }: { params: { id: string } }) {
             <div className="p-4 rounded-2xl border space-y-2" style={{ background: "#faf9fb", borderColor: "#e7bdb8" }}>
               <div className="flex justify-between text-[14px]">
                 <span style={{ color: "#5d3f3c" }}>Paket Layanan</span>
-                <strong className="capitalize" style={{ color: "#1a1c1e" }}>{activeTab} Package</strong>
+                <strong className="capitalize" style={{ color: "#1a1c1e" }}>{activeTab} Package ({activeTab === "basic" ? "2 Tahapan" : activeTab === "standard" ? "3 Tahapan" : "4 Tahapan"})</strong>
               </div>
               <div className="flex justify-between text-[14px]">
                 <span style={{ color: "#5d3f3c" }}>Freelancer</span>
