@@ -15,7 +15,7 @@ export default function Navbar() {
         {/* Brand + Nav Links */}
         <div className="flex items-center gap-8">
           <Link
-            href="/"
+            href={profile ? (profile.role === "client" ? "/browse" : "/dashboard") : "/"}
             className="text-[24px] font-bold leading-8 font-headline"
             style={{ color: "#b90014", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >

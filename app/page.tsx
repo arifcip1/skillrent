@@ -1,14 +1,12 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "SkillRent | Sewa Bakat Mahasiswa Terbaik",
-  description:
-    "Platform freelance khusus mahasiswa terverifikasi. Kualitas profesional, harga mahasiswa, didukung kecerdasan buatan.",
-};
+import { useAuth } from "@/lib/AuthContext";
 
 const categories = [
   { icon: "palette", name: "Desain Grafis", desc: "Logo, branding, dan ilustrasi kreatif." },
@@ -56,6 +54,22 @@ const testimonials = [
 ];
 
 export default function LandingPage() {
+  const { profile, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && profile) {
+      if (profile.role === "client") {
+        router.replace("/browse");
+      } else {
+        router.replace("/dashboard");
+      }
+    }
+  }, [profile, loading, router]);
+
+  if (!loading && profile) {
+    return null;
+  }
   return (
     <>
       <Navbar />
