@@ -32,11 +32,14 @@ export default function LoginPage() {
       });
 
       if (error) {
-        if (error.message.toLowerCase().includes("email not confirmed")) {
+        const msg = typeof error.message === "string" ? error.message : (error as any)?.msg || JSON.stringify(error) || "Login gagal";
+        if (msg.toLowerCase().includes("email not confirmed")) {
           setIsEmailUnconfirmed(true);
           setErrorMsg("Email belum dikonfirmasi oleh Supabase.");
+        } else if (msg.toLowerCase().includes("invalid login credentials") || msg === "{}") {
+          setErrorMsg("Email atau password salah. Silakan periksa kembali.");
         } else {
-          setErrorMsg(error.message);
+          setErrorMsg(msg);
         }
       } else {
         // Query profile from Supabase profiles table
