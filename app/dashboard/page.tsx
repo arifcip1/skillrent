@@ -6,14 +6,14 @@ import Footer from "@/components/Footer";
 import UniversityBadge from "@/components/UniversityBadge";
 import { useAuth } from "@/lib/AuthContext";
 
-const milestonesFreelancer = [
+const tahapanFreelancer = [
   {
     id: 1,
     icon: "draw",
     iconBg: "#ebf5ff",
     iconColor: "#0057b9",
     title: "Desain Logo EduTech",
-    milestone: "Draft Logo",
+    tahapan: "Draft Logo",
     deadline: "2 Hari Lagi",
     deadlineColor: "#ba1a1a",
     orderId: "1",
@@ -24,7 +24,7 @@ const milestonesFreelancer = [
     iconBg: "#ffdad6",
     iconColor: "#b90014",
     title: "UI Design Dashboard",
-    milestone: "User Flow",
+    tahapan: "User Flow",
     deadline: "5 Hari Lagi",
     deadlineColor: "#1a1c1e",
     orderId: "1",
@@ -35,7 +35,7 @@ const milestonesFreelancer = [
     iconBg: "#d8e2ff",
     iconColor: "#0057b9",
     title: "Copywriting Landing Page",
-    milestone: "Headline Copy",
+    tahapan: "Headline Copy",
     deadline: "1 Minggu",
     deadlineColor: "#1a1c1e",
     orderId: "1",
@@ -47,7 +47,7 @@ const clientProjects = [
     id: "1",
     title: "Redesign Website UMKM Batik Nusantara",
     freelancerName: "Aditya Pratama (Universitas Indonesia)",
-    status: "Milestone 2: UI Design Development (Paid in Escrow)",
+    status: "Tahap 2: Pengembangan Desain UI (Dana Dijamin Escrow)",
     budget: "Rp 15.000.000",
     orderId: "1",
   },
@@ -55,7 +55,7 @@ const clientProjects = [
     id: "2",
     title: "Desain Logo & Identitas Brand Startup EduTech",
     freelancerName: "Siti Aminah (ITB)",
-    status: "Milestone 1: Konsep & Wireframes",
+    status: "Tahap 1: Konsep & Wireframes",
     budget: "Rp 4.500.000",
     orderId: "1",
   },
@@ -198,7 +198,7 @@ export default function DashboardPage() {
                   2 Proyek
                 </h2>
                 <div className="mt-4 pt-4 border-t flex justify-between text-[12px]" style={{ borderTopColor: "#efedf0", color: "#5d3f3c" }}>
-                  <span>Menunggu Review: <strong>1 Milestone</strong></span>
+                  <span>Menunggu Review: <strong>1 Tahapan</strong></span>
                 </div>
               </div>
 
@@ -427,16 +427,16 @@ export default function DashboardPage() {
               </div>
             </section>
 
-            {/* Active Milestones & Actions */}
+            {/* Tahapan Aktif & Aksi */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Milestones List */}
+              {/* Daftar Tahapan */}
               <section className="lg:col-span-8 space-y-4">
                 <div className="flex justify-between items-center px-2">
                   <h3
                     className="text-[24px] font-bold"
                     style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
-                    Milestone Mendatang
+                    Tahapan Mendatang
                   </h3>
                   <Link href="/order/1" className="text-[14px] font-semibold hover:underline" style={{ color: "#b90014" }}>
                     Lihat Semua Proyek
@@ -444,7 +444,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="space-y-4">
-                  {milestonesFreelancer.map((m) => (
+                  {tahapanFreelancer.map((m) => (
                     <div
                       key={m.id}
                       className="p-6 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-md bg-white"
@@ -459,7 +459,7 @@ export default function DashboardPage() {
                         </div>
                         <div>
                           <p className="text-[16px] font-bold" style={{ color: "#1a1c1e" }}>{m.title}</p>
-                          <p className="text-[13px]" style={{ color: "#5d3f3c" }}>Milestone: <strong>{m.milestone}</strong></p>
+                          <p className="text-[13px]" style={{ color: "#5d3f3c" }}>Tahapan: <strong>{m.tahapan}</strong></p>
                         </div>
                       </div>
 

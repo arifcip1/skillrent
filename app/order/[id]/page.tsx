@@ -5,10 +5,10 @@ import UniversityBadge from "@/components/UniversityBadge";
 
 export const metadata: Metadata = {
   title: "Order Progress",
-  description: "Pantau progress proyek dan kelola milestone escrow Anda.",
+  description: "Pantau progress proyek dan kelola tahapan pembayaran Escrow Anda.",
 };
 
-const milestones = [
+const tahapan = [
   {
     step: 1,
     label: "Riset",
@@ -77,7 +77,7 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
                 <div className="w-6 h-6 rounded-full overflow-hidden" style={{ background: "#ffdad6" }}>
                   <span className="material-symbols-outlined text-[20px]" style={{ color: "#b90014" }}>person</span>
                 </div>
-                <span className="text-[14px] font-semibold" style={{ color: "#1a1c1e" }}>Aris Setiawan</span>
+                <span className="text-[14px] font-semibold" style={{ color: "#1a1c1e" }}>Aditya Pratama</span>
               </div>
               <UniversityBadge name="Universitas Indonesia" />
             </div>
@@ -95,14 +95,14 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ── Left: Progress ── */}
           <div className="lg:col-span-8 space-y-8">
-            {/* Milestone Visual Tracker */}
+            {/* Pelacak Visual Tahapan */}
             <section className="p-8 rounded-xl border shadow-sm overflow-hidden" style={{ background: "#ffffff", borderColor: "#e3e2e4" }}>
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-[24px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Progress Milestones
+                  Progress Tahapan
                 </h2>
                 <span className="px-3 py-1 rounded-full text-[12px] font-medium" style={{ background: "#fd8b00", color: "#603100" }}>
-                  Active: Milestone 2
+                  Sedang Berjalan: Tahap 2
                 </span>
               </div>
 
@@ -113,7 +113,7 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
                 {/* Active fill */}
                 <div className="absolute top-5 left-0 z-0 h-[3px]" style={{ width: `${progressPercent}%`, background: "#904d00" }} />
 
-                {milestones.map((m, i) => {
+                {tahapan.map((m, i) => {
                   const isDone = m.status === "done";
                   const isActive = m.status === "active";
                   return (
@@ -128,7 +128,7 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
                         }}
                       >
                         <span className="material-symbols-outlined text-[20px]">
-                          {isDone ? "check" : isActive ? "pending" : i === milestones.length - 1 ? "flag" : "schedule"}
+                          {isDone ? "check" : isActive ? "pending" : i === tahapan.length - 1 ? "flag" : "schedule"}
                         </span>
                       </div>
                       <span className="text-[14px] font-semibold block mb-1" style={{ color: isActive || isDone ? "#1a1c1e" : "#5d3f3c" }}>
@@ -142,12 +142,12 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
                 })}
               </div>
 
-              {/* Active Milestone Detail */}
+              {/* Detail Tahapan Aktif */}
               <div className="rounded-xl p-6 border-l-4" style={{ background: "#f4f3f5", borderLeftColor: "#fd8b00" }}>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div>
                     <h3 className="text-[18px] font-semibold mb-2" style={{ color: "#1a1c1e" }}>
-                      Review Milestone 2: Draft Logo Identity
+                      Review Tahap 2: Draft Logo Identity
                     </h3>
                     <p className="text-[16px] leading-6 mb-4 max-w-xl" style={{ color: "#5d3f3c" }}>
                       Freelancer telah mengirimkan draft awal berupa 3 opsi konsep logo, palet warna primer, dan tipografi dasar.
@@ -173,7 +173,7 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
                       className="w-full text-white py-3 px-6 rounded-xl text-[14px] font-semibold shadow-lg transition-all active:scale-95"
                       style={{ background: "#b90014", boxShadow: "0 8px 20px rgba(185,0,20,0.2)" }}
                     >
-                      Setujui Milestone
+                      Setujui Tahapan
                     </button>
                     <button
                       className="w-full py-3 px-6 rounded-xl text-[14px] font-semibold border-2 transition-all active:scale-95 hover:bg-[#fff5f5]"
@@ -186,13 +186,13 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
               </div>
             </section>
 
-            {/* Milestone History List */}
+            {/* Riwayat Tahapan */}
             <section className="space-y-4">
               <h3 className="text-[24px] font-semibold px-2" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Rincian Milestone
+                Rincian Tahapan
               </h3>
               <div className="space-y-3">
-                {milestones.map((m) => {
+                {tahapan.map((m) => {
                   const isDone = m.status === "done";
                   const isActive = m.status === "active";
                   return (
@@ -218,7 +218,7 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
                           {isDone ? "check_circle" : isActive ? "pending" : "circle"}
                         </span>
                         <div>
-                          <p className="font-bold" style={{ color: "#1a1c1e" }}>Milestone {m.step}: {
+                          <p className="font-bold" style={{ color: "#1a1c1e" }}>Tahap {m.step}: {
                             m.step === 1 ? "Riset Kompetitor & User Persona" :
                             m.step === 2 ? "Draft Logo & Visual Direction" :
                             m.step === 3 ? "Sesi Revisi Utama" :
@@ -275,7 +275,7 @@ export default async function OrderProgressPage({ params }: { params: Promise<{ 
               <div className="p-4 flex items-start gap-3" style={{ background: "rgba(255,255,255,0.07)" }}>
                 <span className="material-symbols-outlined shrink-0" style={{ color: "#ffb4ac" }}>shield_with_heart</span>
                 <p className="text-[12px] leading-relaxed" style={{ color: "#e3e2e4" }}>
-                  Dana Anda aman di sistem SkillRent. Pembayaran hanya akan dicairkan ke freelancer setelah Anda menyetujui setiap milestone.
+                  Dana Anda aman di sistem SkillRent. Pembayaran hanya akan dicairkan ke freelancer setelah Anda menyetujui setiap tahapan.
                 </p>
               </div>
             </div>

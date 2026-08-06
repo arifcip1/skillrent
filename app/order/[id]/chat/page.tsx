@@ -27,7 +27,7 @@ const initialMessages: Message[] = [
   {
     id: 3,
     from: "client",
-    text: "Keren sekali hasilnya, Aditya! Saya dan tim sangat suka pengintegrasian motif batik modernnya. Pembayaran milestone 2 sebesar Rp 6.750.000 sudah kami tempatkan di sistem Escrow.",
+    text: "Keren sekali hasilnya, Aditya! Saya dan tim sangat suka pengintegrasian motif batik modernnya. Pembayaran tahap 2 sebesar Rp 6.750.000 sudah kami tempatkan di sistem Escrow.",
     time: "14:18",
   },
   {
@@ -39,7 +39,7 @@ const initialMessages: Message[] = [
   {
     id: 5,
     from: "system",
-    text: "Dana Escrow Milestone 2 sebesar Rp 6.750.000 telah diamankan oleh SkillRent Security.",
+    text: "Dana Escrow Tahap 2 sebesar Rp 6.750.000 telah diamankan oleh SkillRent Security.",
     time: "14:22",
   },
 ];

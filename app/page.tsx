@@ -27,7 +27,7 @@ const features = [
   },
   {
     icon: "payments",
-    title: "Pembayaran Aman via Escrow Milestone",
+    title: "Pembayaran Aman Bertahap (Escrow)",
     desc: "Dana hanya dicairkan setelah Anda menyetujui setiap tahapan pekerjaan.",
   },
   {

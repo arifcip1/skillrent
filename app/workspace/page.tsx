@@ -18,7 +18,7 @@ export default function WorkspacePage() {
     {
       id: 2,
       sender: "client",
-      text: "Looks incredible, Arjun! The patterns feel much more authentic now. I'll review them with the team and release the milestone funds by this afternoon.",
+      text: "Hasilnya luar biasa, Aditya! Motif batiknya terasa jauh lebih autentik sekarang. Saya akan review bersama tim dan mencairkan dana tahapan ini sore ini.",
       time: "10:45 AM",
     },
     {
@@ -89,16 +89,16 @@ export default function WorkspacePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Milestone Tracker & Freelancer Info */}
+          {/* Left Column: Pelacak Tahapan & Info Freelancer */}
           <div className="lg:col-span-7 space-y-8">
-            {/* Milestone Tracker Card */}
+            {/* Pelacak Tahapan */}
             <div className="p-6 md:p-8 rounded-2xl border bg-white shadow-sm" style={{ borderColor: "#e7bdb8" }}>
               <div className="flex items-center justify-between mb-8 pb-4 border-b" style={{ borderBottomColor: "#efedf0" }}>
                 <h2
                   className="text-[20px] font-bold"
                   style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  Milestone Tracker
+                  Pelacak Tahapan
                 </h2>
                 <div
                   className="px-3 py-1 rounded-full text-[12px] font-bold border flex items-center gap-1.5"
