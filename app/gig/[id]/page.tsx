@@ -45,7 +45,24 @@ const portfolioItems = [
 
 export default function GigDetailPage({ params }: { params: { id: string } }) {
   const [activeTab, setActiveTab] = useState<"basic" | "standard" | "premium">("basic");
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("bca");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
+
   const pkg = packages[activeTab];
+
+  const handleConfirmOrder = () => {
+    setIsProcessing(true);
+    setTimeout(() => {
+      setIsProcessing(false);
+      setOrderSuccess(true);
+      setTimeout(() => {
+        window.location.href = "/order/1";
+      }, 1200);
+    }, 1000);
+  };
 
   return (
     <>
@@ -112,7 +129,7 @@ export default function GigDetailPage({ params }: { params: { id: string } }) {
               </div>
               <div className="space-y-2">
                 <h2 className="text-[24px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Aditya Pratama</h2>
-                <UniversityBadge name="Universitas Gadjah Mada" />
+                <UniversityBadge name="Universitas Indonesia" />
                 <p className="text-[14px] leading-5" style={{ color: "#5d3f3c" }}>Jurusan: Desain Komunikasi Visual</p>
               </div>
             </section>
@@ -208,13 +225,13 @@ export default function GigDetailPage({ params }: { params: { id: string } }) {
                   </div>
                 </div>
 
-                <Link
-                  href={`/order/1`}
-                  className="block w-full text-white text-center py-4 rounded-xl text-[24px] font-semibold transition-all hover:shadow-lg active:scale-[0.98]"
+                <button
+                  onClick={() => setIsCheckoutOpen(true)}
+                  className="w-full text-white text-center py-4 rounded-xl text-[18px] font-semibold transition-all hover:shadow-lg active:scale-[0.98]"
                   style={{ background: "#b90014" }}
                 >
-                  Pesan Sekarang
-                </Link>
+                  Pesan &amp; Amankan Escrow
+                </button>
 
                 <div className="flex items-center justify-center gap-4" style={{ color: "#5d3f3c" }}>
                   <button className="flex items-center gap-1 text-[12px] font-medium hover:text-[#b90014] transition-colors">
@@ -230,6 +247,114 @@ export default function GigDetailPage({ params }: { params: { id: string } }) {
           </aside>
         </div>
       </main>
+
+      {/* ── Order & Escrow Checkout Modal ── */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}>
+          <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl space-y-6 relative border" style={{ borderColor: "#e7bdb8" }}>
+            <button
+              onClick={() => setIsCheckoutOpen(false)}
+              className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-100 text-gray-500"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl" style={{ background: "#ffdad6", color: "#b90014" }}>
+                <span className="material-symbols-outlined text-[24px]">verified_user</span>
+              </div>
+              <div>
+                <h3 className="text-[20px] font-bold" style={{ color: "#1a1c1e" }}>Konfirmasi Pesanan &amp; Escrow</h3>
+                <p className="text-[12px]" style={{ color: "#5d3f3c" }}>Dana Anda 100% Aman di Sistem SkillRent Escrow</p>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="p-4 rounded-2xl border space-y-2" style={{ background: "#faf9fb", borderColor: "#e7bdb8" }}>
+              <div className="flex justify-between text-[14px]">
+                <span style={{ color: "#5d3f3c" }}>Paket Layanan</span>
+                <strong className="capitalize" style={{ color: "#1a1c1e" }}>{activeTab} Package</strong>
+              </div>
+              <div className="flex justify-between text-[14px]">
+                <span style={{ color: "#5d3f3c" }}>Freelancer</span>
+                <strong style={{ color: "#1a1c1e" }}>Aditya Pratama (UI)</strong>
+              </div>
+              <div className="flex justify-between text-[16px] font-bold pt-2 border-t" style={{ borderTopColor: "#efedf0" }}>
+                <span style={{ color: "#1a1c1e" }}>Total Biaya</span>
+                <span style={{ color: "#b90014" }}>{pkg.price}</span>
+              </div>
+            </div>
+
+            {/* Brief Notes */}
+            <div className="space-y-2">
+              <label className="text-[14px] font-semibold" style={{ color: "#1a1c1e" }}>Catatan Tambahan untuk Freelancer (Opsional)</label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Contoh: Tolong buatkan warna dominan Biru dan Oranye..."
+                rows={2}
+                className="w-full p-3 text-[14px] rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#b90014]"
+                style={{ borderColor: "#e7bdb8" }}
+              />
+            </div>
+
+            {/* Payment Method */}
+            <div className="space-y-2">
+              <label className="text-[14px] font-semibold" style={{ color: "#1a1c1e" }}>Metode Pembayaran</label>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { id: "bca", name: "Bank BCA" },
+                  { id: "mandiri", name: "Bank Mandiri" },
+                  { id: "qris", name: "QRIS / GoPay" },
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setPaymentMethod(m.id)}
+                    className="p-3 rounded-xl border text-[13px] font-semibold text-center transition-all"
+                    style={paymentMethod === m.id
+                      ? { borderColor: "#b90014", background: "#ffdad6", color: "#b90014" }
+                      : { borderColor: "#e7bdb8", background: "#ffffff", color: "#5d3f3c" }
+                    }
+                  >
+                    {m.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Security Note */}
+            <div className="p-3 rounded-xl flex items-center gap-2 text-[12px]" style={{ background: "#ebf5ff", color: "#0057b9" }}>
+              <span className="material-symbols-outlined text-[18px]">lock</span>
+              <span>Pembayaran tidak langsung diberikan ke freelancer sampai Anda menyetujui hasil kerja.</span>
+            </div>
+
+            {/* Action */}
+            {orderSuccess ? (
+              <div className="p-4 rounded-xl text-center text-white font-bold animate-bounce" style={{ background: "#1dbf73" }}>
+                ✅ Pembayaran Berhasil! Mengarahkan ke Workspace...
+              </div>
+            ) : (
+              <button
+                onClick={handleConfirmOrder}
+                disabled={isProcessing}
+                className="w-full text-white py-4 rounded-xl text-[16px] font-semibold transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-2"
+                style={{ background: "#b90014" }}
+              >
+                {isProcessing ? (
+                  <>
+                    <span className="animate-spin material-symbols-outlined">refresh</span>
+                    Memproses Escrow...
+                  </>
+                ) : (
+                  `Konfirmasi & Bayar ke Escrow (${pkg.price})`
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       <Footer />
       <MobileBottomNav active="projects" />
       <div className="h-16 md:hidden" />
