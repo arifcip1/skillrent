@@ -75,6 +75,39 @@ export default function BrowsePage() {
     );
   };
 
+  // Live Filter Calculation
+  const filteredGigs = SAMPLE_GIGS.filter((gig) => {
+    // Search Query Filter
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matchTitle = gig.title.toLowerCase().includes(q);
+      const matchSeller = gig.sellerName.toLowerCase().includes(q);
+      const matchUniv = gig.sellerUniversity.toLowerCase().includes(q);
+      if (!matchTitle && !matchSeller && !matchUniv) return false;
+    }
+
+    // University Filter
+    if (selectedUnivs.length > 0) {
+      const matchesUniv = selectedUnivs.some(
+        (u) => gig.sellerUniversity.toLowerCase().includes(u.toLowerCase()) || u.toLowerCase().includes(gig.sellerUniversity.toLowerCase())
+      );
+      if (!matchesUniv) return false;
+    }
+
+    // Service Type Filter
+    if (selectedType !== "Semua Tipe") {
+      if (selectedType === "Minimalis" && !gig.title.toLowerCase().includes("minimalis")) return false;
+      if (selectedType === "Maskot / Ilustrasi" && !gig.title.toLowerCase().includes("maskot") && !gig.title.toLowerCase().includes("karakter")) return false;
+    }
+
+    // Price Filter
+    const numericPrice = parseInt(gig.price.replace(/[^0-9]/g, "")) * 1000;
+    if (minPrice && numericPrice < parseInt(minPrice)) return false;
+    if (maxPrice && numericPrice > parseInt(maxPrice)) return false;
+
+    return true;
+  });
+
   return (
     <>
       <Navbar />
@@ -95,7 +128,7 @@ export default function BrowsePage() {
                 {searchQuery ? `Hasil Pencarian untuk "${searchQuery}"` : "Telusuri Layanan Bakat Mahasiswa"}
               </h1>
               <p className="text-[16px] leading-[24px]" style={{ color: "#5d3f3c" }}>
-                Dapatkan layanan profesional karya mahasiswa berbakat dari universitas ternama.
+                Dapatkan layanan profesional karya mahasiswa berbakat dari universitas ternama. ({filteredGigs.length} Jasa Ditemukan)
               </p>
             </div>
 
@@ -122,7 +155,7 @@ export default function BrowsePage() {
                 />
               </div>
 
-              {(searchQuery || selectedUnivs.length > 0 || minPrice || maxPrice) && (
+              {(searchQuery || selectedUnivs.length > 0 || minPrice || maxPrice || selectedType !== "Semua Tipe") && (
                 <button
                   onClick={handleResetFilters}
                   className="px-4 py-2.5 rounded-xl border text-[13px] font-semibold flex items-center gap-1.5 shrink-0 transition-colors hover:bg-gray-100"
@@ -158,7 +191,7 @@ export default function BrowsePage() {
               AI Rekomendasi
             </p>
             <p className="text-[14px]" style={{ color: "#004493" }}>
-              Kami merekomendasikan mahasiswa ini berdasarkan kebutuhan Anda.
+              Kami merekomendasikan mahasiswa terverifikasi ini berdasarkan kriteria Anda.
             </p>
           </div>
         </div>
@@ -192,9 +225,6 @@ export default function BrowsePage() {
                       </span>
                     </label>
                   ))}
-                  <button className="text-[14px] font-semibold mt-2 hover:underline" style={{ color: "#b90014" }}>
-                    + Lihat Semua
-                  </button>
                 </div>
               </div>
 
@@ -272,10 +302,11 @@ export default function BrowsePage() {
                     </div>
                   </div>
                   <button
+                    onClick={handleResetFilters}
                     className="w-full py-2 text-[14px] font-semibold rounded-lg transition-colors hover:bg-[#e3e2e4]"
                     style={{ background: "#efedf0", color: "#1a1c1e" }}
                   >
-                    Terapkan
+                    Reset Filter
                   </button>
                 </div>
               </div>
@@ -284,11 +315,26 @@ export default function BrowsePage() {
 
           {/* Results Grid */}
           <div className="flex-1 w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {SAMPLE_GIGS.map((gig) => (
-                <GigCard key={gig.id} {...gig} />
-              ))}
-            </div>
+            {filteredGigs.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredGigs.map((gig) => (
+                  <GigCard key={gig.id} {...gig} />
+                ))}
+              </div>
+            ) : (
+              <div className="p-12 rounded-3xl text-center border space-y-4 bg-white" style={{ borderColor: "#e7bdb8" }}>
+                <span className="material-symbols-outlined text-[48px]" style={{ color: "#b90014" }}>search_off</span>
+                <h3 className="text-[20px] font-bold" style={{ color: "#1a1c1e" }}>Jasa Tidak Ditemukan</h3>
+                <p className="text-[14px]" style={{ color: "#5d3f3c" }}>Tidak ada layanan mahasiswa yang sesuai dengan kombinasi kata kunci atau filter Anda.</p>
+                <button
+                  onClick={handleResetFilters}
+                  className="px-6 py-2.5 text-white font-bold text-[14px] rounded-xl"
+                  style={{ background: "#b90014" }}
+                >
+                  Reset Semua Filter
+                </button>
+              </div>
+            )}
 
             {/* Pagination */}
             <div className="mt-12 flex justify-center gap-2">
