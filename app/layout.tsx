@@ -3,11 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "SkillRent | Sewa Bakat Mahasiswa Terbaik",
+    default: "SkillRent | Talenta Muda, Dampak Nyata",
     template: "%s | SkillRent",
   },
   description:
-    "Platform freelance khusus mahasiswa terverifikasi. Kualitas profesional, harga mahasiswa, didukung kecerdasan buatan.",
+    "Platform kolaborasi bakat mahasiswa terverifikasi. Kualitas profesional, garansi pembayaran Escrow 100%, didukung kecerdasan buatan (AI).",
   keywords: ["freelance", "mahasiswa", "terverifikasi", "kampus", "SkillRent"],
   icons: {
     icon: "/icon.svg",
