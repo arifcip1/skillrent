@@ -136,6 +136,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(null);
     if (typeof window !== "undefined") {
       localStorage.removeItem("skillrent_user_profile");
+      window.location.href = "/";
     }
   };
 

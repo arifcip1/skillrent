@@ -84,9 +84,29 @@ export default function RegisterPage() {
         },
       });
 
-      if (error && !error.message.includes("already registered")) {
-        // Even if email confirmation is required, profile is saved
-        console.warn("Supabase signUp note:", error.message);
+      if (error) {
+        const msg = typeof error.message === "string" ? error.message : JSON.stringify(error);
+        if (msg.includes("already registered")) {
+          setErrorMsg("Email sudah terdaftar. Silakan login.");
+        } else {
+          setErrorMsg("Gagal mendaftar: " + msg);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Insert profile into profiles table
+      if (data.user) {
+        await supabase.from("profiles").upsert({
+          id: data.user.id,
+          full_name: fullName,
+          email: personalEmail,
+          campus_email: campusEmail,
+          university: university || "Universitas Indonesia",
+          role: "freelancer",
+          is_verified: true,
+        });
+        setLocalProfile({ ...userProfile, id: data.user.id });
       }
 
       setSuccessMsg("Pendaftaran berhasil! Mengarahkan ke dashboard...");
@@ -94,11 +114,7 @@ export default function RegisterPage() {
         router.push("/dashboard");
       }, 1000);
     } catch (err: any) {
-      // Fallback redirect anyway
-      setSuccessMsg("Pendaftaran akun berhasil! Mengarahkan ke dashboard...");
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
+      setErrorMsg("Terjadi kesalahan: " + (err.message || ""));
     } finally {
       setLoading(false);
     }
@@ -138,8 +154,27 @@ export default function RegisterPage() {
         },
       });
 
-      if (error && !error.message.includes("already registered")) {
-        console.warn("Supabase client signUp note:", error.message);
+      if (error) {
+        const msg = typeof error.message === "string" ? error.message : JSON.stringify(error);
+        if (msg.includes("already registered")) {
+          setErrorMsg("Email sudah terdaftar. Silakan login.");
+        } else {
+          setErrorMsg("Gagal mendaftar: " + msg);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Insert profile into profiles table
+      if (data.user) {
+        await supabase.from("profiles").upsert({
+          id: data.user.id,
+          full_name: clientName,
+          email: businessEmail,
+          role: "client",
+          is_verified: true,
+        });
+        setLocalProfile({ ...clientProfile, id: data.user.id });
       }
 
       setSuccessMsg("Pendaftaran akun Klien berhasil! Mengarahkan ke dashboard...");
@@ -147,10 +182,7 @@ export default function RegisterPage() {
         router.push("/dashboard");
       }, 1000);
     } catch (err: any) {
-      setSuccessMsg("Pendaftaran akun Klien berhasil! Mengarahkan ke dashboard...");
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
+      setErrorMsg("Terjadi kesalahan: " + (err.message || ""));
     } finally {
       setLoading(false);
     }

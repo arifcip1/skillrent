@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import UniversityBadge from "@/components/UniversityBadge";
@@ -62,7 +63,14 @@ const clientProjects = [
 ];
 
 export default function DashboardPage() {
-  const { user, profile } = useAuth();
+  const { user, profile, loading } = useAuth();
+  const router = useRouter();
+
+  // Redirect to login if not authenticated
+  if (!loading && !profile) {
+    router.push("/login");
+    return null;
+  }
 
   // Determine user role and details
   const isClient = profile?.role === "client";
