@@ -17,11 +17,12 @@ type Step = "input" | "result";
 
 function detectCategory(text: string) {
   const t = text.toLowerCase();
-  if (t.includes("logo") || t.includes("desain") || t.includes("gambar")) return "Graphic Design";
-  if (t.includes("web") || t.includes("landing") || t.includes("program")) return "Web Development";
-  if (t.includes("konten") || t.includes("sosmed") || t.includes("instagram")) return "Digital Marketing";
-  if (t.includes("video") || t.includes("edit")) return "Video Editing";
-  return "Umum";
+  if (t.includes("app") || t.includes("flutter") || t.includes("mobile") || t.includes("web") || t.includes("landing") || t.includes("program") || t.includes("code") || t.includes("sistem")) return "Web & Mobile Development";
+  if (t.includes("tableau") || t.includes("spss") || t.includes("data") || t.includes("excel") || t.includes("looker") || t.includes("python") || t.includes("analisis")) return "Data Analytics & AI";
+  if (t.includes("video") || t.includes("reels") || t.includes("tiktok") || t.includes("motion") || t.includes("edit") || t.includes("youtube")) return "Video Editing & Animation";
+  if (t.includes("konten") || t.includes("sosmed") || t.includes("instagram") || t.includes("artikel") || t.includes("seo") || t.includes("naskah") || t.includes("copywriter")) return "Digital Marketing & Content";
+  if (t.includes("logo") || t.includes("desain") || t.includes("kemasan") || t.includes("packaging") || t.includes("gambar") || t.includes("brand")) return "Graphic Design & Branding";
+  return "Jasa Spesialis Mahasiswa";
 }
 
 function detectBudget(text: string) {
@@ -39,21 +40,113 @@ function detectDeadline(text: string) {
   return match ? match[0] : "Tentukan di deskripsi";
 }
 
+function generateProjectSummary(text: string, category: string): string {
+  if (!text || text.length < 5) return "Detail proyek belum diisi.";
+  const cleanText = text.trim();
+  const firstSentence = cleanText.split(/[.!?\n]/)[0].trim();
+
+  if (firstSentence.length >= 15) {
+    return `Proyek ${category}: "${firstSentence}". Dirumuskan secara spesifik untuk dikerjakan oleh mahasiswa ahli terverifikasi dengan standar akademik.`;
+  }
+  return `Pembuatan kebutuhan ${category} profesional berdasarkan instruksi Anda: "${cleanText.slice(0, 100)}..."`;
+}
+
+function generateScopeOfWork(text: string, category: string): string[] {
+  const t = text.toLowerCase();
+
+  if (t.includes("app") || t.includes("flutter") || t.includes("web") || t.includes("landing") || category.includes("Development")) {
+    return [
+      "Analisis arsitektur sistem, alur pengguna (User Flow), & wireframe antarmuka.",
+      "Pengembangan UI/UX responsif & integrasi fitur utama (API / GPS / Database).",
+      "Pengujian fungsionalitas aplikasi (QA testing) & optimasi performa.",
+      "Penyerahan source code lengkap (GitHub/Zip) & petunjuk instalasi.",
+    ];
+  }
+
+  if (t.includes("tableau") || t.includes("spss") || t.includes("excel") || t.includes("data") || category.includes("Data")) {
+    return [
+      "Pembersihan (data cleaning) & validasi struktur dataset dari sumber data.",
+      "Pengolahan statistik & pemodelan analisis sesuai kriteria proyek.",
+      "Pembuatan dashboard visualisasi interaktif (Tableau / Looker Studio / BI).",
+      "Penyusunan laporan ringkasan eksekutif (Executive Summary / PDF).",
+    ];
+  }
+
+  if (t.includes("video") || t.includes("reels") || t.includes("tiktok") || category.includes("Video")) {
+    return [
+      "Pemotongan ritme video (rough cut) & penyusunan alur cerita (storyboard).",
+      "Penambahan motion graphics, teks subtitle, transisi, & efek visual.",
+      "Color grading profesional & penataan audio / sound design bebas cipta.",
+      "Export video HQ format MP4 (Rasio 9:16 / 16:9 siap tayang).",
+    ];
+  }
+
+  if (t.includes("konten") || t.includes("sosmed") || t.includes("artikel") || t.includes("seo") || category.includes("Marketing")) {
+    return [
+      "Riset kata kunci (SEO / Hashtag) & formulasi pilar konten target pasar.",
+      "Penyusunan naskah copywriting / artikel SEO berkualitas tinggi.",
+      "Desain template visual feed / pengerjaan draft konten promosi.",
+      "Revisi penyelarasan tone of voice & penyerahan jadwal rilis.",
+    ];
+  }
+
+  // Graphic Design / Logo default
+  return [
+    "Riset konsep visual, moodboard, & sketsa ide awal.",
+    "Pembuatan 2-3 alternatif konsep desain utama (Vektor/HD).",
+    "Penyelarasan palet warna, tipografi brand, & revisi masukan.",
+    "Finalisasi & ekspor aset lengkap (AI, EPS, SVG, PNG transparan).",
+  ];
+}
+
+function generateDeliverables(text: string, category: string): string[] {
+  const t = text.toLowerCase();
+
+  if (t.includes("app") || t.includes("flutter") || t.includes("web") || t.includes("landing") || category.includes("Development")) {
+    return ["Source Code Repository", "Live Demo Link", "Dokumentasi API & Install", "Aset Figma UI/UX"];
+  }
+
+  if (t.includes("tableau") || t.includes("spss") || t.includes("excel") || t.includes("data") || category.includes("Data")) {
+    return ["File Dashboard Tableau/BI", "Laporan Analisis (PDF)", "Dataset Terstruktur (Excel/CSV)", "Ringkasan Eksekutif"];
+  }
+
+  if (t.includes("video") || t.includes("reels") || t.includes("tiktok") || category.includes("Video")) {
+    return ["Master Video Full HD (MP4)", "Project File (Premiere/AE)", "Aset Subtitle & Grafis", "Format Vertical (9:16)"];
+  }
+
+  if (t.includes("konten") || t.includes("sosmed") || t.includes("artikel") || t.includes("seo") || category.includes("Marketing")) {
+    return ["Dokumen Artikel (.docx/PDF)", "Visual Feed & Story Kit", "Riset Keyword SEO", "Jadwal Posting Konten"];
+  }
+
+  return ["File Master Vektor (AI/EPS)", "Export HQ (PNG Transparan & JPG)", "Buku Panduan Brand (PDF)", "Palet Warna Kode Hex"];
+}
+
 export default function BriefPage() {
   const [step, setStep] = useState<Step>("input");
   const [inputText, setInputText] = useState("");
-  const [preview, setPreview] = useState({ budget: "Rp 0", deadline: "Tentukan di deskripsi", category: "Menunggu Input..." });
+  const [preview, setPreview] = useState({
+    budget: "Rp 0",
+    deadline: "Tentukan di deskripsi",
+    category: "Menunggu Input...",
+    summary: "",
+    scope: [] as string[],
+    deliverables: [] as string[],
+  });
   const syncTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (syncTimeout.current) clearTimeout(syncTimeout.current);
     syncTimeout.current = setTimeout(() => {
+      const cat = detectCategory(inputText);
       setPreview({
         budget: detectBudget(inputText),
         deadline: detectDeadline(inputText),
-        category: detectCategory(inputText),
+        category: cat,
+        summary: generateProjectSummary(inputText, cat),
+        scope: generateScopeOfWork(inputText, cat),
+        deliverables: generateDeliverables(inputText, cat),
       });
-    }, 400);
+    }, 300);
   }, [inputText]);
 
   if (step === "result") {
@@ -120,60 +213,49 @@ export default function BriefPage() {
                   <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
                 </div>
                 <div>
-                  <p className="text-[12px] font-semibold uppercase tracking-wider opacity-80">LANGKAH BERIKUTNYA</p>
-                  <p className="text-[24px] font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Siap Menemukan Bakat?</p>
+                  <h3 className="text-[18px] font-semibold">Siap mengubah ide jadi brief terstruktur?</h3>
+                  <p className="text-[14px] opacity-80">AI akan menganalisis scope &amp; rekomendasi mahasiswa yang cocok.</p>
                 </div>
               </div>
               <button
-                onClick={() => inputText.length > 20 ? setStep("result") : alert("Tuliskan detail proyek Anda terlebih dahulu!")}
-                className="w-full md:w-auto text-white px-8 py-4 rounded-xl text-[24px] font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                disabled={inputText.length < 10}
+                onClick={() => setStep("result")}
+                className="w-full md:w-auto px-6 py-3 rounded-xl font-bold text-[14px] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ background: "#b90014" }}
               >
-                Generate & Cari Mahasiswa
-                <span className="material-symbols-outlined">arrow_forward</span>
+                Generate AI Brief
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
             </div>
           </div>
 
-          {/* Preview Sidebar */}
-          <aside className="lg:col-span-4 sticky top-24">
-            <div className="rounded-xl shadow-sm border overflow-hidden" style={{ background: "#ffffff", borderColor: "#e7bdb8" }}>
-              {/* Header */}
-              <div className="p-4 flex items-center justify-between text-white" style={{ background: "#0057b9" }}>
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>visibility</span>
-                  <span className="text-[14px] font-semibold tracking-wide">PREVIEW BRIEF TERSTRUKTUR</span>
-                </div>
+          {/* Right Live Preview Panel (Step 1) */}
+          <aside className="lg:col-span-4 flex flex-col gap-4">
+            <div className="p-6 rounded-xl border shadow-sm space-y-6" style={{ background: "#ffffff", borderColor: "#e7bdb8" }}>
+              <div className="flex items-center gap-2 border-b pb-4" style={{ borderBottomColor: "#e7bdb8" }}>
+                <span className="material-symbols-outlined text-[20px]" style={{ color: "#0057b9" }}>auto_awesome</span>
+                <h3 className="text-[16px] font-bold" style={{ color: "#1a1c1e" }}>Analisis AI Real-time</h3>
               </div>
 
-              <div className="p-6 flex flex-col gap-6 ai-shimmer">
+              <div className="space-y-4">
                 {/* Budget */}
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2" style={{ color: "#5d3f3c" }}>
-                    <span className="material-symbols-outlined text-[18px]">payments</span>
-                    <span className="text-[12px] font-medium uppercase tracking-wide">Estimasi Budget</span>
-                  </div>
-                  <div className="text-[24px] font-semibold" style={{ color: "#904d00", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Estimasi Budget</span>
+                  <div className="text-[20px] font-bold text-[#b90014]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {preview.budget}
                   </div>
                 </div>
 
                 {/* Deadline */}
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2" style={{ color: "#5d3f3c" }}>
-                    <span className="material-symbols-outlined text-[18px]">event</span>
-                    <span className="text-[12px] font-medium uppercase tracking-wide">Deadline</span>
-                  </div>
-                  <div className="text-[16px] font-semibold" style={{ color: "#1a1c1e" }}>{preview.deadline}</div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Estimasi Deadline</span>
+                  <div className="text-[15px] font-semibold" style={{ color: "#1a1c1e" }}>{preview.deadline}</div>
                 </div>
 
                 {/* Category */}
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2" style={{ color: "#5d3f3c" }}>
-                    <span className="material-symbols-outlined text-[18px]">category</span>
-                    <span className="text-[12px] font-medium uppercase tracking-wide">Kategori & Scope</span>
-                  </div>
-                  <span className="px-3 py-1 rounded-lg text-[14px] font-semibold border w-fit" style={{ background: "#ebf5ff", color: "#0057b9", borderColor: "#adc7ff" }}>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Kategori Terdeteksi</span>
+                  <span className="px-3 py-1 rounded-lg text-[13px] font-semibold border w-fit" style={{ background: "#ebf5ff", color: "#0057b9", borderColor: "#adc7ff" }}>
                     {preview.category}
                   </span>
                 </div>
@@ -181,41 +263,21 @@ export default function BriefPage() {
                 <hr style={{ borderColor: "rgba(231,189,184,0.3)" }} />
 
                 {/* Tasks */}
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-2" style={{ color: "#5d3f3c" }}>
-                    <span className="material-symbols-outlined text-[18px]">list_alt</span>
-                    <span className="text-[12px] font-medium uppercase tracking-wide">Analisis AI</span>
-                  </div>
-                  {inputText.length > 20 ? (
-                    <ul className="flex flex-col gap-3">
-                      {["Drafting & Konsep Awal", "Revisi Berdasarkan Feedback", "Final Handover & Aset"].map((task) => (
-                        <li key={task} className="flex items-start gap-3">
-                          <span className="material-symbols-outlined text-[18px]" style={{ color: "#1dbf73" }}>check_circle</span>
-                          <span className="text-[14px] leading-5" style={{ color: "#1a1c1e" }}>{task}</span>
+                <div className="flex flex-col gap-3">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Daftar Scope Pekerjaan (AI)</span>
+                  {inputText.length > 10 ? (
+                    <ul className="flex flex-col gap-2">
+                      {preview.scope.map((task, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-[13px]" style={{ color: "#1a1c1e" }}>
+                          <span className="material-symbols-outlined text-[16px] text-emerald-600 shrink-0 mt-0.5">check_circle</span>
+                          <span>{task}</span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <li className="flex items-start gap-3 opacity-40 list-none">
-                      <span className="material-symbols-outlined text-[18px]" style={{ color: "#1dbf73" }}>check_circle</span>
-                      <span className="text-[14px] leading-5">Poin-poin pekerjaan akan muncul di sini...</span>
-                    </li>
+                    <p className="text-[12px] text-gray-400 italic">Ketik ide proyek Anda untuk melihat scope pekerjaan otomatis...</p>
                   )}
                 </div>
-              </div>
-
-              <div className="p-4 border-t flex items-center gap-2" style={{ borderTopColor: "#e7bdb8", color: "#5d3f3c" }}>
-                <span className="material-symbols-outlined text-[16px]">info</span>
-                <span className="text-[11px] leading-tight">Brief ini akan divalidasi oleh sistem SkillRent untuk memastikan standar kualitas akademik terpenuhi.</span>
-              </div>
-            </div>
-
-            {/* Tips */}
-            <div className="mt-4 rounded-xl p-4 border flex gap-3" style={{ background: "#ebf5ff", borderColor: "#adc7ff" }}>
-              <span className="material-symbols-outlined" style={{ color: "#0057b9" }}>lightbulb</span>
-              <div>
-                <p className="text-[14px] font-semibold" style={{ color: "#0057b9" }}>Tip AI</p>
-                <p className="text-[13px] mt-1" style={{ color: "#004493" }}>Sebutkan nama universitas jika Anda mencari spesialisasi tertentu (misal: &quot;Mahasiswa DKV ITB&quot;).</p>
               </div>
             </div>
           </aside>
@@ -223,7 +285,6 @@ export default function BriefPage() {
       </main>
       <Footer />
       <MobileBottomNav active="brief" />
-      <div className="h-16 md:hidden" />
     </>
   );
 }
@@ -233,12 +294,15 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
   const router = useRouter();
   const category = detectCategory(inputText);
   const budget = detectBudget(inputText);
+  const deadline = detectDeadline(inputText);
+  const summary = generateProjectSummary(inputText, category);
+  const scopeOfWork = generateScopeOfWork(inputText, category);
+  const deliverables = generateDeliverables(inputText, category);
   const [isNavigating, setIsNavigating] = useState(false);
 
   const handleUseBriefAndSearch = () => {
     setIsNavigating(true);
 
-    // Store generated brief in localStorage for AI recommendations matching
     if (typeof window !== "undefined") {
       localStorage.setItem(
         "skillrent_active_brief",
@@ -246,7 +310,10 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
           inputText,
           category,
           budget,
-          deadline: detectDeadline(inputText),
+          deadline,
+          summary,
+          scopeOfWork,
+          deliverables,
           createdAt: new Date().toISOString(),
         })
       );
@@ -274,7 +341,7 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                 </h1>
               </div>
               <p className="text-[16px] leading-6 max-w-2xl" style={{ color: "#5d3f3c" }}>
-                Brief Anda sudah diproses oleh AI! Gunakan tombol di kanan bawah untuk langsung mencocokkan dengan mahasiswa terbaik.
+                Brief Anda telah dirumuskan secara khusus oleh AI! Periksa ringkasan dan ruang lingkup di panel sebelah kanan.
               </p>
             </div>
 
@@ -296,28 +363,8 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                   style={{ background: "#b90014" }}
                 >
                   <span className="material-symbols-outlined text-[18px]">edit</span>
-                  Edit Input
+                  Edit Input Prompt
                 </button>
-              </div>
-            </div>
-
-            {/* Suggested prompts */}
-            <div className="space-y-4">
-              <h3 className="text-[14px] font-semibold uppercase tracking-wider flex items-center gap-2" style={{ color: "#5d3f3c" }}>
-                <span className="material-symbols-outlined text-[18px]">lightbulb</span>
-                Saran Kategori Terkait
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {["Desain Logo", "Landing Page", "Konten Sosmed", "Edit Video Reels"].map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => router.push(`/browse?q=${encodeURIComponent(p)}`)}
-                    className="px-5 py-2.5 rounded-full border text-[14px] transition-all active:scale-95 hover:text-[#b90014] hover:border-[#b90014]"
-                    style={{ background: "#efedf0", borderColor: "rgba(231,189,184,0.3)", color: "#5d3f3c" }}
-                  >
-                    {p}
-                  </button>
-                ))}
               </div>
             </div>
           </section>
@@ -326,42 +373,42 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
           <section className="lg:col-span-5 h-full">
             <div
               className="border rounded-3xl overflow-hidden flex flex-col shadow-sm"
-              style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.4)", height: "700px" }}
+              style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.4)", minHeight: "650px" }}
             >
               {/* Header */}
               <div className="p-6 border-b flex items-center justify-between" style={{ borderBottomColor: "rgba(231,189,184,0.2)" }}>
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined" style={{ color: "#b90014" }}>description</span>
-                  <h2 className="text-[24px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Preview Brief Terstruktur</h2>
+                  <h2 className="text-[20px] font-bold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Brief AI Terstruktur</h2>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full" style={{ background: "rgba(29,191,115,0.1)", color: "#1dbf73" }}>
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700">
                   <span className="material-symbols-outlined text-[14px]">bolt</span>
-                  <span className="text-[12px] font-medium">AI Active</span>
+                  <span className="text-[12px] font-bold">AI Formulated</span>
                 </div>
               </div>
 
               {/* Scrollable content */}
               <div className="flex-grow overflow-y-auto p-6 space-y-6 custom-scrollbar" style={{ background: "rgba(250,249,251,0.3)" }}>
                 {/* Ringkasan */}
-                <div className="p-5 rounded-2xl border shadow-sm space-y-3 transition-all hover:border-[#b90014]/20" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
+                <div className="p-5 rounded-2xl border shadow-sm space-y-2 transition-all hover:border-[#b90014]/20" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
                   <h4 className="text-[14px] font-semibold flex items-center gap-2" style={{ color: "#b90014" }}>
-                    <span className="material-symbols-outlined text-[18px]">info</span> Ringkasan Proyek
+                    <span className="material-symbols-outlined text-[18px]">info</span> Ringkasan Proyek (AI)
                   </h4>
-                  <p className="text-[16px] leading-6" style={{ color: "#5d3f3c" }}>
-                    Pembuatan kebutuhan {category.toLowerCase()} yang disesuaikan dengan brief Anda untuk eksekusi oleh mahasiswa spesialis.
+                  <p className="text-[14px] leading-6 font-medium" style={{ color: "#1a1c1e" }}>
+                    {summary}
                   </p>
                 </div>
 
                 {/* Ruang Lingkup */}
                 <div className="p-5 rounded-2xl border shadow-sm space-y-3 transition-all hover:border-[#b90014]/20" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
                   <h4 className="text-[14px] font-semibold flex items-center gap-2" style={{ color: "#b90014" }}>
-                    <span className="material-symbols-outlined text-[18px]">format_list_bulleted</span> Ruang Lingkup Pekerjaan
+                    <span className="material-symbols-outlined text-[18px]">format_list_bulleted</span> Ruang Lingkup Pekerjaan (Scope)
                   </h4>
                   <ul className="space-y-2">
-                    {["Drafting & konsep awal sesuai brief.", "Panduan warna, tipografi, dan aset visual.", "Revisi bertahap & final handover."].map((item) => (
-                      <li key={item} className="flex items-start gap-3 text-[14px] leading-5" style={{ color: "#5d3f3c" }}>
-                        <span className="material-symbols-outlined text-[18px]" style={{ color: "#b90014" }}>check_circle</span>
-                        {item}
+                    {scopeOfWork.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-[13px] leading-5" style={{ color: "#1a1c1e" }}>
+                        <span className="material-symbols-outlined text-[16px] text-emerald-600 shrink-0 mt-0.5">check_circle</span>
+                        <span>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -369,23 +416,21 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
 
                 {/* Deadline + Budget grid */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-5 rounded-2xl border shadow-sm space-y-2 transition-all hover:border-[#b90014]/20" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
-                    <h4 className="text-[14px] font-semibold flex items-center gap-2" style={{ color: "#b90014" }}>
-                      <span className="material-symbols-outlined text-[18px]">calendar_today</span> Estimasi Tenggat
+                  <div className="p-4 rounded-2xl border shadow-sm space-y-1 transition-all" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
+                    <h4 className="text-[12px] font-semibold flex items-center gap-1.5" style={{ color: "#b90014" }}>
+                      <span className="material-symbols-outlined text-[16px]">calendar_today</span> Estimasi Tenggat
                     </h4>
-                    <p className="text-[20px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      {detectDeadline(inputText)}
+                    <p className="text-[18px] font-bold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {deadline}
                     </p>
-                    <p className="text-[12px] font-medium" style={{ color: "#926e6b" }}>Berdasarkan input Anda</p>
                   </div>
-                  <div className="p-5 rounded-2xl border shadow-sm space-y-2 transition-all hover:border-[#b90014]/20" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
-                    <h4 className="text-[14px] font-semibold flex items-center gap-2" style={{ color: "#b90014" }}>
+                  <div className="p-4 rounded-2xl border shadow-sm space-y-1 transition-all" style={{ background: "#ffffff", borderColor: "rgba(231,189,184,0.2)" }}>
+                    <h4 className="text-[12px] font-semibold flex items-center gap-1.5" style={{ color: "#b90014" }}>
                       <span className="material-symbols-outlined text-[18px]">payments</span> Estimasi Budget
                     </h4>
-                    <p className="text-[20px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <p className="text-[18px] font-bold" style={{ color: "#904d00", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       {budget}
                     </p>
-                    <p className="text-[12px] font-medium" style={{ color: "#926e6b" }}>Fixed Price</p>
                   </div>
                 </div>
 
@@ -395,8 +440,8 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                     <span className="material-symbols-outlined text-[18px]">package_2</span> Deliverables yang Diharapkan
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {["File Master Vektor", "Export HQ (PNG, JPG)", "Dokumentasi Final"].map((d) => (
-                      <span key={d} className="px-3 py-1 rounded-lg text-[12px] font-medium" style={{ background: "#efedf0", color: "#5d3f3c" }}>{d}</span>
+                    {deliverables.map((d) => (
+                      <span key={d} className="px-3 py-1.5 rounded-lg text-[12px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">{d}</span>
                     ))}
                   </div>
                 </div>
@@ -407,18 +452,18 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                 <button
                   onClick={handleUseBriefAndSearch}
                   disabled={isNavigating}
-                  className="w-full text-white py-4 rounded-2xl text-[14px] font-semibold flex items-center justify-center gap-3 hover:shadow-xl hover:-translate-y-[2px] active:scale-[0.98] transition-all disabled:opacity-75"
+                  className="w-full text-white py-3.5 rounded-2xl text-[14px] font-bold flex items-center justify-center gap-2 hover:shadow-xl active:scale-[0.98] transition-all disabled:opacity-75"
                   style={{ background: "#b90014" }}
                 >
                   {isNavigating ? (
                     <>
                       <span className="animate-spin material-symbols-outlined text-[18px]">refresh</span>
-                      Mencari Mahasiswa Terverifikasi AI...
+                      Mencari Mahasiswa Terverifikasi...
                     </>
                   ) : (
                     <>
                       Gunakan Brief Ini &amp; Cari Mahasiswa
-                      <span className="material-symbols-outlined">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                     </>
                   )}
                 </button>
@@ -429,7 +474,6 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
       </main>
       <Footer />
       <MobileBottomNav active="brief" />
-      <div className="h-16 md:hidden" />
     </>
   );
 }
