@@ -235,23 +235,23 @@ function BrowseContent() {
       <Navbar />
 
       <main className="max-w-[1280px] mx-auto px-4 md:px-12 py-8 min-h-screen">
-        {/* Header Banner: Welcome Back or Personalized Greeting */}
+        {/* Header Banner: Welcome Back or Personalized Greeting (Compact) */}
         <div
-          className="rounded-2xl p-6 md:p-8 mb-8 border flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm"
+          className="rounded-xl p-4 md:px-6 md:py-4 mb-6 border flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs"
           style={{
             background: "linear-gradient(135deg, #ffffff 0%, #faf9fb 100%)",
             borderColor: "#e7bdb8",
           }}
         >
-          <div className="space-y-2">
-            <div className="flex items-center gap-2" style={{ color: "#b90014" }}>
-              <span className="material-symbols-outlined text-[24px]">waving_hand</span>
-              <span className="text-[12px] font-bold uppercase tracking-wider">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-1.5" style={{ color: "#b90014" }}>
+              <span className="material-symbols-outlined text-[16px]">waving_hand</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">
                 PLATFORM TALENTA MAHASISWA
               </span>
             </div>
             <h1
-              className="text-[28px] md:text-[36px] font-bold"
+              className="text-[18px] md:text-[22px] font-bold"
               style={{
                 color: "#1a1c1e",
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -260,7 +260,7 @@ function BrowseContent() {
             >
               {profile?.full_name ? `Welcome back, ${profile.full_name}! 👋` : "Telusuri Layanan Bakat Mahasiswa"}
             </h1>
-            <p className="text-[15px] leading-6 max-w-2xl" style={{ color: "#5d3f3c" }}>
+            <p className="text-[13px] leading-5 max-w-xl" style={{ color: "#5d3f3c" }}>
               Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia.
             </p>
           </div>
@@ -270,19 +270,19 @@ function BrowseContent() {
             {hasActiveBrief ? (
               <Link
                 href="/recommendations"
-                className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
+                className="px-4 py-2 rounded-lg text-white font-semibold text-[12px] flex items-center justify-center gap-1.5 shrink-0 shadow-sm transition-transform active:scale-95 whitespace-nowrap"
                 style={{ background: "#0057b9" }}
               >
-                <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+                <span className="material-symbols-outlined text-[15px]">auto_awesome</span>
                 Rekomendasi Brief AI
               </Link>
             ) : (
               <Link
                 href="/brief"
-                className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
+                className="px-4 py-2 rounded-lg text-white font-semibold text-[12px] flex items-center justify-center gap-1.5 shrink-0 shadow-sm transition-transform active:scale-95 whitespace-nowrap"
                 style={{ background: "#b90014" }}
               >
-                <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+                <span className="material-symbols-outlined text-[15px]">auto_awesome</span>
                 Buat Brief AI
               </Link>
             )}

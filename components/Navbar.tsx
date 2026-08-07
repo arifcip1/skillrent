@@ -67,10 +67,9 @@ function NavbarContent() {
             </Link>
             <Link
               href="/brief"
-              className="text-[14px] font-semibold tracking-[0.05em] transition-colors duration-200 hover:text-[#b90014] flex items-center gap-1"
+              className="text-[14px] font-semibold tracking-[0.05em] transition-colors duration-200 hover:text-[#b90014]"
               style={{ color: "#5d3f3c" }}
             >
-              <span className="material-symbols-outlined text-[16px]" style={{ color: "#b90014" }}>auto_awesome</span>
               AI Brief
             </Link>
           </div>
