@@ -37,11 +37,12 @@ export default function LoginPage() {
           setIsEmailUnconfirmed(true);
           setErrorMsg("Email belum dikonfirmasi oleh Supabase.");
         } else if (msg.toLowerCase().includes("invalid login credentials") || msg === "{}") {
-          setErrorMsg("Email atau password salah. Silakan periksa kembali atau gunakan tombol Login Instan.");
+          setErrorMsg("Email atau password salah. Silakan periksa kembali.");
         } else {
           setErrorMsg(msg);
         }
       } else {
+        // Query profile from Supabase profiles table
         if (data.user) {
           const { data: prof } = await supabase
             .from("profiles")
@@ -60,19 +61,23 @@ export default function LoginPage() {
               full_name: meta.full_name || email.split("@")[0],
               email: email,
               campus_email: meta.campus_email,
-              university: meta.university || "Universitas Trunojoyo Madura",
+              university: meta.university || "Universitas Indonesia",
               role: userRole as "freelancer" | "client",
             });
           }
 
+          // Clear stale search history / filters
           if (typeof window !== "undefined") {
             localStorage.removeItem("skillrent_search_history");
           }
 
-          setSuccessMsg("Login berhasil! Mengarahkan ke Telusuri Jasa...");
+          const targetRoute = "/browse";
+          const routeMsg = "Login berhasil! Mengarahkan ke Telusuri Jasa...";
+
+          setSuccessMsg(routeMsg);
           setTimeout(() => {
-            router.push("/browse");
-          }, 600);
+            router.push(targetRoute);
+          }, 800);
         }
       }
     } catch (err: any) {
@@ -82,34 +87,17 @@ export default function LoginPage() {
     }
   };
 
-  const handleDemoFreelancerLogin = () => {
+  const handleBypassLogin = () => {
+    // Save login profile locally so user can continue seamlessly
     setLocalProfile({
-      id: "demo-freelancer-1",
-      full_name: "Aditya Pratama",
-      email: "aditya.freelancer@trunojoyo.ac.id",
-      campus_email: "aditya.freelancer@trunojoyo.ac.id",
-      university: "Universitas Trunojoyo Madura",
+      full_name: email ? email.split("@")[0].replace(/[._]/g, " ") : "Pengguna SkillRent",
+      email: email || "user@skillrent.id",
       role: "freelancer",
-      is_verified: true,
+      university: "Universitas Indonesia",
     });
-    setSuccessMsg("Masuk sebagai Mahasiswa Freelancer (Aditya Pratama)...");
+    setSuccessMsg("Mengarahkan ke dashboard...");
     setTimeout(() => {
-      router.push("/browse");
-    }, 500);
-  };
-
-  const handleDemoClientLogin = () => {
-    setLocalProfile({
-      id: "demo-client-1",
-      full_name: "PT Nusantara Digital",
-      email: "client@nusantara.id",
-      university: "Klien Institusi / Mitra",
-      role: "client",
-      is_verified: true,
-    });
-    setSuccessMsg("Masuk sebagai Klien (PT Nusantara Digital)...");
-    setTimeout(() => {
-      router.push("/browse");
+      router.push("/dashboard");
     }, 500);
   };
 
@@ -134,7 +122,14 @@ export default function LoginPage() {
 
           <div className="relative z-10 max-w-lg text-white">
             <div className="flex items-center gap-3 mb-8">
-              <img src="/logo.png" alt="SkillRent Logo" className="h-10 w-auto object-contain bg-white p-1 rounded-xl" />
+              <div className="bg-white p-2 rounded-xl">
+                <span
+                  className="material-symbols-outlined text-[32px]"
+                  style={{ color: "#b90014", fontVariationSettings: "'FILL' 1" }}
+                >
+                  school
+                </span>
+              </div>
               <span
                 className="text-[32px] font-extrabold tracking-tight"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -144,7 +139,7 @@ export default function LoginPage() {
             </div>
 
             <h1
-              className="text-[44px] font-bold leading-[1.15] mb-6"
+              className="text-[48px] font-bold leading-[1.15] mb-6"
               style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 letterSpacing: "-0.02em",
@@ -155,7 +150,7 @@ export default function LoginPage() {
               Sejak Mahasiswa.
             </h1>
 
-            <p className="text-[17px] leading-7 mb-12" style={{ color: "rgba(255,255,255,0.8)" }}>
+            <p className="text-[18px] leading-7 mb-12" style={{ color: "rgba(255,255,255,0.8)" }}>
               Platform freelance eksklusif untuk mahasiswa terverifikasi. Sewa talenta akademik terbaik atau bangun portofolio profesionalmu sekarang.
             </p>
 
@@ -178,7 +173,7 @@ export default function LoginPage() {
                   Terverifikasi
                 </h3>
                 <p className="text-[13px] opacity-70 leading-relaxed">
-                  Sistem verifikasi SSO kampus ketat untuk keamanan transaksi.
+                  Sistem verifikasi kampus ketat untuk keamanan transaksi.
                 </p>
               </div>
               <div
@@ -196,10 +191,10 @@ export default function LoginPage() {
                   className="text-[14px] font-semibold tracking-wider uppercase mb-1"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
-                  Harga Terjangkau
+                  Cepat &amp; Aman
                 </h3>
                 <p className="text-[13px] opacity-70 leading-relaxed">
-                  Jasa berkualitas tinggi dengan garansi pembayaran Escrow 100%.
+                  Pembayaran aman dengan sistem escrow yang terintegrasi.
                 </p>
               </div>
             </div>
@@ -208,107 +203,91 @@ export default function LoginPage() {
 
         {/* ── Right Side: Login Form ── */}
         <div
-          className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12"
-          style={{ background: "#ffffff" }}
+          className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 lg:p-16"
+          style={{ background: "#faf9fb" }}
         >
-          <div className="w-full max-w-md space-y-8">
-            <div>
-              <Link href="/" className="inline-flex items-center gap-2 mb-6 text-[#b90014] font-bold text-[14px]">
-                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                Kembali ke Beranda
-              </Link>
+          <div className="w-full max-w-md">
+            <div className="lg:hidden flex items-center gap-2 mb-8">
+              <span
+                className="material-symbols-outlined text-[30px]"
+                style={{ color: "#b90014" }}
+              >
+                school
+              </span>
+              <span
+                className="text-[24px] font-bold"
+                style={{ color: "#b90014", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                SkillRent
+              </span>
+            </div>
+
+            <div className="mb-10">
               <h2
-                className="text-[32px] font-bold"
+                className="text-[32px] font-bold mb-2"
                 style={{
                   color: "#1a1c1e",
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   letterSpacing: "-0.01em",
+                  lineHeight: "40px",
                 }}
               >
-                Selamat Datang Kembali
+                Masuk ke Akun
               </h2>
-              <p className="text-[15px] mt-2" style={{ color: "#5d3f3c" }}>
-                Masuk ke akun SkillRent Anda untuk melanjutkan.
+              <p className="text-[16px] leading-6" style={{ color: "#5d3f3c" }}>
+                Selamat datang kembali di SkillRent.
               </p>
             </div>
 
-            {/* Quick 1-Click Demo Login Buttons */}
-            <div className="p-4 rounded-2xl border space-y-3 bg-[#faf9fb]" style={{ borderColor: "#adc7ff" }}>
-              <div className="flex items-center gap-2 text-[#0057b9]">
-                <span className="material-symbols-outlined text-[18px]">bolt</span>
-                <span className="text-[12px] font-extrabold uppercase tracking-wider">Akses Masuk Instan (Demo Mode)</span>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={handleDemoFreelancerLogin}
-                  className="py-2.5 px-3 rounded-xl border font-bold text-[12px] flex items-center justify-center gap-1.5 transition-all bg-purple-50 text-purple-800 border-purple-200 hover:bg-purple-100 active:scale-95"
-                >
-                  <span className="material-symbols-outlined text-[16px]">school</span>
-                  Mahasiswa Freelancer
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDemoClientLogin}
-                  className="py-2.5 px-3 rounded-xl border font-bold text-[12px] flex items-center justify-center gap-1.5 transition-all bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 active:scale-95"
-                >
-                  <span className="material-symbols-outlined text-[16px]">work</span>
-                  Akun Klien
-                </button>
-              </div>
-            </div>
-
-            {/* Notifications */}
+            {/* Alerts */}
             {errorMsg && (
-              <div className="p-4 rounded-xl text-[14px] font-medium border bg-[#ffdad6] text-[#ba1a1a] border-[#ffdad6]">
-                <p className="flex items-center gap-2 font-bold mb-1">
-                  <span className="material-symbols-outlined text-[18px]">error</span>
-                  Gagal Masuk
-                </p>
-                <p>{errorMsg}</p>
+              <div className="p-4 mb-6 rounded-xl border space-y-2" style={{ background: "#ffdad6", borderColor: "#ba1a1a", color: "#93000a" }}>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-[20px]">error</span>
+                  <span className="text-[14px] font-medium">{errorMsg}</span>
+                </div>
+
                 {isEmailUnconfirmed && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLocalProfile({
-                        full_name: email.split("@")[0],
-                        email,
-                        role: "freelancer",
-                        university: "Universitas Trunojoyo Madura",
-                      });
-                      router.push("/browse");
-                    }}
-                    className="mt-3 text-[13px] font-bold text-white px-4 py-2 rounded-lg bg-[#b90014]"
-                  >
-                    Bypass Konfirmasi &amp; Masuk Sekarang
-                  </button>
+                  <div className="pt-2 border-t border-red-200 text-[12px] space-y-2">
+                    <p>
+                      <strong>Saran:</strong> Di Dashboard Supabase Anda, matikan opsi <em>&quot;Confirm email&quot;</em> di menu <code>Authentication -&gt; Providers -&gt; Email</code> agar login langsung berhasil tanpa perlu verifikasi email.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleBypassLogin}
+                      className="w-full py-2 px-4 rounded-lg bg-white font-bold text-[#b90014] text-[13px] border border-red-300 hover:bg-gray-50"
+                    >
+                      Lanjutkan ke Dashboard (Bypass Email Check) →
+                    </button>
+                  </div>
                 )}
               </div>
             )}
 
             {successMsg && (
-              <div className="p-4 rounded-xl text-[14px] font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                {successMsg}
+              <div className="p-4 mb-6 rounded-xl border flex items-center gap-3" style={{ background: "#ebf5ff", borderColor: "#0057b9", color: "#004493" }}>
+                <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                <span className="text-[14px] font-medium">{successMsg}</span>
               </div>
             )}
 
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-2">
+            {/* Form */}
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div className="space-y-1">
                 <label
-                  className="block text-[13px] font-bold tracking-wider uppercase"
-                  style={{ color: "#1a1c1e" }}
+                  className="block text-[14px] font-semibold tracking-wider uppercase"
+                  style={{ color: "#1a1c1e", letterSpacing: "0.05em" }}
                 >
-                  Email Kampus / Email Pengguna
+                  Email
                 </label>
                 <input
                   id="login-email"
                   type="email"
-                  placeholder="nama@trunojoyo.ac.id atau nama@email.com"
+                  placeholder="contoh@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3.5 rounded-xl border text-[15px] outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border text-[16px] outline-none transition-all"
                   style={{
                     borderColor: "#e7bdb8",
                     background: "#ffffff",
@@ -317,24 +296,21 @@ export default function LoginPage() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <label
-                    className="block text-[13px] font-bold tracking-wider uppercase"
-                    style={{ color: "#1a1c1e" }}
+                    className="block text-[14px] font-semibold tracking-wider uppercase"
+                    style={{ color: "#1a1c1e", letterSpacing: "0.05em" }}
                   >
                     Password
                   </label>
-                  <a
+                  <Link
                     href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDemoFreelancerLogin();
-                    }}
-                    className="text-[13px] font-bold hover:underline text-[#b90014]"
+                    className="text-[13px] font-semibold hover:underline"
+                    style={{ color: "#b90014" }}
                   >
-                    Lupa Password? (Gunakan Login Instan)
-                  </a>
+                    Lupa Password?
+                  </Link>
                 </div>
                 <div className="relative">
                   <input
@@ -344,7 +320,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-3.5 pr-12 rounded-xl border text-[15px] outline-none transition-all"
+                    className="w-full px-4 py-3 pr-12 rounded-xl border text-[16px] outline-none transition-all"
                     style={{
                       borderColor: "#e7bdb8",
                       background: "#ffffff",
@@ -369,9 +345,11 @@ export default function LoginPage() {
                 type="submit"
                 id="login-submit"
                 disabled={loading}
-                className="w-full text-white text-[14px] font-bold tracking-wider uppercase py-4 rounded-xl transition-all active:scale-[0.98] mt-4 flex items-center justify-center gap-2 shadow-md"
+                className="w-full text-white text-[14px] font-semibold tracking-wider uppercase py-4 rounded-xl transition-all active:scale-[0.98] mt-4 flex items-center justify-center gap-2"
                 style={{
                   background: "#b90014",
+                  boxShadow: "0 8px 20px rgba(185,0,20,0.20)",
+                  letterSpacing: "0.05em",
                   opacity: loading ? 0.7 : 1,
                 }}
               >
@@ -387,14 +365,14 @@ export default function LoginPage() {
             </form>
 
             <div
-              className="mt-8 pt-6 border-t text-center"
+              className="mt-10 pt-8 border-t text-center"
               style={{ borderTopColor: "#e7bdb8" }}
             >
               <p className="text-[14px] leading-5" style={{ color: "#5d3f3c" }}>
                 Belum punya akun?{" "}
                 <Link
                   href="/register"
-                  className="font-bold hover:underline"
+                  className="font-semibold hover:underline"
                   style={{ color: "#b90014" }}
                 >
                   Daftar Sekarang
@@ -404,6 +382,40 @@ export default function LoginPage() {
           </div>
         </div>
       </main>
+
+      <footer
+        className="w-full py-12 px-4 md:px-12 border-t"
+        style={{ background: "#40161c", borderTopColor: "rgba(146,110,107,0.2)" }}
+      >
+        <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined" style={{ color: "#ffffff" }}>
+              school
+            </span>
+            <span
+              className="text-[24px] font-bold"
+              style={{ color: "#ffffff", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              SkillRent
+            </span>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6">
+            {["About", "Safety", "Terms", "Privacy", "University Partners"].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-[12px] font-medium transition-colors hover:text-[#fd8b00]"
+                style={{ color: "#e3e2e4" }}
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+          <p className="text-[14px] opacity-70" style={{ color: "#e3e2e4" }}>
+            © 2025 SkillRent Ecosystem. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </>
   );
 }
