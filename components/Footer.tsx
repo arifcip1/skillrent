@@ -107,7 +107,7 @@ export default function Footer() {
         style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
       >
         <p className="text-[14px] leading-5" style={{ color: "#e3e2e4" }}>
-          © 2024 SkillRent Ecosystem. All rights reserved.
+          © 2026 SkillRent Ecosystem. All rights reserved.
         </p>
         <div className="flex gap-6">
           <span className="text-[12px] font-medium" style={{ color: "#e3e2e4" }}>

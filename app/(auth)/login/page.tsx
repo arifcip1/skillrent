@@ -414,7 +414,7 @@ export default function LoginPage() {
             ))}
           </div>
           <p className="text-[14px] opacity-70" style={{ color: "#e3e2e4" }}>
-            © 2024 SkillRent Ecosystem. All rights reserved.
+            © 2025 SkillRent Ecosystem. All rights reserved.
           </p>
         </div>
       </footer>
