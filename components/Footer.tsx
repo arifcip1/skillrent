@@ -12,12 +12,19 @@ export default function Footer() {
       <div className="max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div className="col-span-2 md:col-span-1 space-y-4">
-          <span
-            className="text-[24px] font-semibold leading-8"
-            style={{ color: "#ffffff", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            SkillRent
-          </span>
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/logo.png"
+              alt="SkillRent Logo"
+              className="h-8 w-auto object-contain bg-white/10 rounded-lg p-1"
+            />
+            <span
+              className="text-[22px] font-semibold leading-none"
+              style={{ color: "#ffffff", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              SkillRent
+            </span>
+          </div>
           <p className="text-[14px] leading-5" style={{ color: "#e3e2e4" }}>
             Platform terdepan untuk kolaborasi bisnis dengan talenta mahasiswa
             terverifikasi.

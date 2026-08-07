@@ -45,10 +45,19 @@ function NavbarContent() {
         <div className="flex items-center gap-6 md:gap-8">
           <Link
             href={user ? "/browse" : "/"}
-            className="text-[24px] font-bold leading-8 font-headline shrink-0"
-            style={{ color: "#b90014", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            className="flex items-center gap-2.5 shrink-0 transition-opacity hover:opacity-90"
           >
-            SkillRent
+            <img
+              src="/logo.png"
+              alt="SkillRent Logo"
+              className="h-8 md:h-9 w-auto object-contain"
+            />
+            <span
+              className="text-[22px] md:text-[24px] font-bold leading-none"
+              style={{ color: "#b90014", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              SkillRent
+            </span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             <Link
