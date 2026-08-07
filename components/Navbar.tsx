@@ -1,19 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/AuthContext";
 
-export default function Navbar() {
+function NavbarContent() {
   const { user, profile, signOut } = useAuth();
-  const [navSearch, setNavSearch] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [navSearch, setNavSearch] = useState("");
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    setNavSearch(q || "");
+  }, [searchParams]);
+
+  const handleInputChange = (val: string) => {
+    setNavSearch(val);
+    if (pathname === "/browse") {
+      if (val.trim()) {
+        router.replace(`/browse?q=${encodeURIComponent(val.trim())}`);
+      } else {
+        router.replace("/browse");
+      }
+    }
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (navSearch.trim()) {
-      router.push(`/browse?q=${encodeURIComponent(navSearch.trim())}`);
+    if (pathname !== "/browse") {
+      router.push(navSearch.trim() ? `/browse?q=${encodeURIComponent(navSearch.trim())}` : "/browse");
     }
   };
 
@@ -69,7 +87,7 @@ export default function Navbar() {
           <input
             type="text"
             value={navSearch}
-            onChange={(e) => setNavSearch(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             placeholder="Cari jasa / mahasiswa..."
             className="w-full pl-9 pr-4 py-2 rounded-full text-[13px] outline-none border transition-all"
             style={{
@@ -148,5 +166,13 @@ export default function Navbar() {
         </div>
       </nav>
     </header>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense fallback={<div className="h-16 bg-white border-b" />}>
+      <NavbarContent />
+    </Suspense>
   );
 }

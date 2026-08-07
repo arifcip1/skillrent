@@ -265,34 +265,12 @@ function BrowseContent() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
-            {/* Search Bar in Header */}
-            <div className="relative w-full sm:w-64 md:w-72">
-              <span
-                className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px]"
-                style={{ color: "#5d3f3c" }}
-              >
-                search
-              </span>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari jasa / mahasiswa..."
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl text-[13px] outline-none border transition-all shadow-sm"
-                style={{
-                  background: "#ffffff",
-                  borderColor: "#e7bdb8",
-                  color: "#1a1c1e",
-                }}
-              />
-            </div>
-
+          <div className="flex items-center gap-3 shrink-0">
             {/* AI Brief Button */}
             {hasActiveBrief ? (
               <Link
                 href="/recommendations"
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
+                className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
                 style={{ background: "#0057b9" }}
               >
                 <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
@@ -301,7 +279,7 @@ function BrowseContent() {
             ) : (
               <Link
                 href="/brief"
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
+                className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
                 style={{ background: "#b90014" }}
               >
                 <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
