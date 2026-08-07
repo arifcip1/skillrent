@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import { useAuth } from "@/lib/AuthContext";
 
 const EXAMPLE_PROMPTS = {
   logo: "Saya butuh logo untuk toko kopi baru saya bernama 'Kopi Senja'. Temanya minimalis tapi energetik, warnanya merah dan putih. Saya butuh selesai dalam 2 minggu dengan budget sekitar 1,5 juta rupiah.",
@@ -122,6 +124,7 @@ function generateDeliverables(text: string, category: string): string[] {
 }
 
 export default function BriefPage() {
+  const { profile } = useAuth();
   const [step, setStep] = useState<Step>("input");
   const [inputText, setInputText] = useState("");
   const [preview, setPreview] = useState({
@@ -153,6 +156,8 @@ export default function BriefPage() {
     return <BriefResultStep inputText={inputText} onBack={() => setStep("input")} />;
   }
 
+  const isFreelancer = profile?.role === "freelancer";
+
   return (
     <>
       <Navbar />
@@ -160,6 +165,30 @@ export default function BriefPage() {
         {/* Floating orbs */}
         <div className="floating-orb" style={{ top: "10%", right: "5%" }} />
         <div className="floating-orb" style={{ bottom: "10%", left: "5%", animationDelay: "-5s" }} />
+
+        {/* Freelancer Role Notice Banner */}
+        {isFreelancer && (
+          <div className="mb-8 p-5 rounded-2xl border bg-purple-50 border-purple-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-purple-200 text-purple-900 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-[24px]">school</span>
+              </div>
+              <div>
+                <h4 className="text-[15px] font-bold text-purple-950">Mode Mahasiswa Freelancer Aktif</h4>
+                <p className="text-[13px] text-purple-800 leading-5">
+                  Halaman **AI Brief** dirancang untuk Klien yang memposting kebutuhan proyek. Sebagai Freelancer, Anda dapat mengelola Gig &amp; memantau pesanan masuk di Dasbor Anda.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/dashboard"
+              className="px-5 py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-[13px] font-bold shrink-0 transition-all shadow-xs flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[16px]">storefront</span>
+              Dasbor Freelancer Saya
+            </Link>
+          </div>
+        )}
 
         {/* Header */}
         <div className="flex flex-col gap-2 mb-10">

@@ -290,6 +290,7 @@ const CATEGORIES = [
 
 function BrowseContent() {
   const { profile } = useAuth();
+  const isFreelancer = profile?.role === "freelancer";
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
@@ -378,10 +379,12 @@ function BrowseContent() {
           }}
         >
           <div className="space-y-0.5">
-            <div className="flex items-center gap-1.5" style={{ color: "#b90014" }}>
-              <span className="material-symbols-outlined text-[16px]">waving_hand</span>
+            <div className="flex items-center gap-1.5" style={{ color: isFreelancer ? "#6b21a8" : "#b90014" }}>
+              <span className="material-symbols-outlined text-[16px]">
+                {isFreelancer ? "school" : "waving_hand"}
+              </span>
               <span className="text-[11px] font-bold uppercase tracking-wider">
-                PLATFORM TALENTA MAHASISWA
+                {isFreelancer ? "MODE MAHASISWA FREELANCER" : "PLATFORM TALENTA MAHASISWA"}
               </span>
             </div>
             <h1
@@ -395,13 +398,22 @@ function BrowseContent() {
               {profile?.full_name ? `Welcome back, ${profile.full_name}!` : "Telusuri Layanan Bakat Mahasiswa"}
             </h1>
             <p className="text-[13px] leading-5 max-w-xl" style={{ color: "#5d3f3c" }}>
-              Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia.
+              {isFreelancer
+                ? "Pasar Jasa Mahasiswa — Dapatkan inspirasi penawaran Gig & pantau harga kompetitif di pasaran."
+                : "Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia."}
             </p>
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            {/* AI Brief Button */}
-            {hasActiveBrief ? (
+            {isFreelancer ? (
+              <Link
+                href="/dashboard"
+                className="px-4 py-2 rounded-lg text-white font-semibold text-[12px] flex items-center justify-center gap-1.5 shrink-0 shadow-sm transition-transform active:scale-95 whitespace-nowrap bg-purple-700 hover:bg-purple-800"
+              >
+                <span className="material-symbols-outlined text-[15px]">storefront</span>
+                Kelola Gig Saya
+              </Link>
+            ) : hasActiveBrief ? (
               <Link
                 href="/recommendations"
                 className="px-4 py-2 rounded-lg text-white font-semibold text-[12px] flex items-center justify-center gap-1.5 shrink-0 shadow-sm transition-transform active:scale-95 whitespace-nowrap"
