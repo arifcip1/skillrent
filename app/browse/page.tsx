@@ -12,12 +12,12 @@ import { useAuth } from "@/lib/AuthContext";
 const SAMPLE_GIGS = [
   {
     id: "1",
-    title: "Logo Minimalis Modern untuk Startup Teknologi & Bisnis",
+    title: "Logo Minimalis Modern & Branding UMKM Kekinian",
     sellerName: "Aditya Pratama",
-    sellerUniversity: "Universitas Indonesia",
+    sellerUniversity: "Universitas Trunojoyo Madura",
     rating: 4.9,
     reviewCount: 124,
-    price: "Rp 250rb",
+    price: "Rp 75rb",
     category: "Graphics & Design",
     isTrending: true,
     imageUrl:
@@ -25,12 +25,12 @@ const SAMPLE_GIGS = [
   },
   {
     id: "2",
-    title: "Desain Logo Maskot & Karakter Custom untuk Gaming & Brand",
-    sellerName: "Siti Aminah",
-    sellerUniversity: "ITB",
+    title: "Desain Poster Promosi, Feed Instagram & Banner Canva/AI",
+    sellerName: "Maya Nurul",
+    sellerUniversity: "Universitas Trunojoyo Madura",
     rating: 4.8,
     reviewCount: 89,
-    price: "Rp 400rb",
+    price: "Rp 45rb",
     category: "Graphics & Design",
     isTrending: true,
     imageUrl:
@@ -38,12 +38,12 @@ const SAMPLE_GIGS = [
   },
   {
     id: "3",
-    title: "Pengembangan Website Next.js & Tailwind Responsif Modern",
-    sellerName: "Bagas Wirawan",
-    sellerUniversity: "ITS",
+    title: "Pengembangan Website Landing Page Responsif Fast Loading",
+    sellerName: "Mohammad Zain",
+    sellerUniversity: "Universitas Trunojoyo Madura",
     rating: 5.0,
     reviewCount: 78,
-    price: "Rp 1,5 Jt",
+    price: "Rp 250rb",
     category: "Programming & Tech",
     isTrending: true,
     imageUrl:
@@ -51,51 +51,51 @@ const SAMPLE_GIGS = [
   },
   {
     id: "4",
-    title: "Jasa Pembuatan Aplikasi Mobile React Native iOS & Android",
-    sellerName: "Rizky Hakim",
-    sellerUniversity: "Universitas Indonesia",
+    title: "Desain Logo Maskot & Karakter Custom untuk Gaming & Brand",
+    sellerName: "Siti Aminah",
+    sellerUniversity: "ITB Bandung",
     rating: 4.9,
     reviewCount: 42,
-    price: "Rp 2,8 Jt",
-    category: "Programming & Tech",
+    price: "Rp 150rb",
+    category: "Graphics & Design",
     isTrending: false,
     imageUrl:
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "5",
-    title: "Kelola Instagram & TikTok Professional (30 Feed + 10 Reels)",
-    sellerName: "Clara Amanda",
-    sellerUniversity: "Universitas Airlangga",
-    rating: 4.7,
-    reviewCount: 95,
-    price: "Rp 850rb",
-    category: "Digital Marketing",
-    isTrending: true,
-    imageUrl:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "6",
     title: "Editing Video Commercial TikTok, Reels & Shorts Engaging",
     sellerName: "Faris Al-Fatih",
     sellerUniversity: "Telkom University",
     rating: 4.9,
     reviewCount: 110,
-    price: "Rp 350rb",
+    price: "Rp 95rb",
     category: "Video & Animation",
     isTrending: true,
     imageUrl:
       "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80",
   },
   {
+    id: "6",
+    title: "Kelola Instagram & TikTok Professional (10 Feed + Reels)",
+    sellerName: "Clara Amanda",
+    sellerUniversity: "Universitas Airlangga",
+    rating: 4.7,
+    reviewCount: 95,
+    price: "Rp 180rb",
+    category: "Digital Marketing",
+    isTrending: fontTrend(true),
+    imageUrl:
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80",
+  },
+  {
     id: "7",
-    title: "Penulisan Artikel SEO, Copywriting Landing Page & Jurnal",
+    title: "Penulisan Artikel SEO, Copywriting Landing Page & Tugas",
     sellerName: "Nabila Putri",
-    sellerUniversity: "UGM",
+    sellerUniversity: "UGM Yogyakarta",
     rating: 4.8,
     reviewCount: 64,
-    price: "Rp 150rb",
+    price: "Rp 50rb",
     category: "Writing & Translation",
     isTrending: false,
     imageUrl:
@@ -103,12 +103,12 @@ const SAMPLE_GIGS = [
   },
   {
     id: "8",
-    title: "Analisis Data Statistik SPSS, R & Visualisasi Dashboard Tableau",
+    title: "Analisis Data Statistik SPSS, Excel & Olah Data Penelitian",
     sellerName: "Dewi Lestari",
     sellerUniversity: "IPB University",
     rating: 4.6,
     reviewCount: 38,
-    price: "Rp 500rb",
+    price: "Rp 120rb",
     category: "Data & AI",
     isTrending: false,
     imageUrl:
@@ -116,31 +116,165 @@ const SAMPLE_GIGS = [
   },
   {
     id: "9",
+    title: "Desain Kemasan Packaging & Label Produk UMKM Elegan",
+    sellerName: "Achmad Fauzi",
+    sellerUniversity: "Universitas Brawijaya",
+    rating: 4.9,
+    reviewCount: 82,
+    price: "Rp 85rb",
+    category: "Graphics & Design",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "10",
+    title: "Pembuatan UI/UX Figma Mobile App & Prototype Interaktif",
+    sellerName: "Rian Hidayat",
+    sellerUniversity: "ITS Surabaya",
+    rating: 5.0,
+    reviewCount: 56,
+    price: "Rp 200rb",
+    category: "Programming & Tech",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "11",
+    title: "Bimbingan & Debugging Kode Python, C++, Java, & HTML/CSS",
+    sellerName: "Dimas Saputra",
+    sellerUniversity: "Universitas Diponegoro",
+    rating: 4.8,
+    reviewCount: 47,
+    price: "Rp 60rb",
+    category: "Programming & Tech",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "12",
+    title: "Desain Presentasi PPT & Pitch Deck Investor Super Rapi",
+    sellerName: "Sarah Az-Zahra",
+    sellerUniversity: "Universitas Negeri Malang",
+    rating: 4.9,
+    reviewCount: 91,
+    price: "Rp 50rb",
+    category: "Graphics & Design",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "13",
+    title: "Jasa Subtitle Video & Translate Inggris - Indonesia Akurat",
+    sellerName: "Anisa Fitri",
+    sellerUniversity: "Universitas Negeri Surabaya",
+    rating: 4.7,
+    reviewCount: 35,
+    price: "Rp 35rb",
+    category: "Writing & Translation",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "14",
     title: "Jingle Musik Brand, Sound Design & Audio Editing Podcast",
     sellerName: "Aris Munandar",
     sellerUniversity: "ISI Yogyakarta",
     rating: 4.9,
     reviewCount: 27,
-    price: "Rp 600rb",
+    price: "Rp 150rb",
     category: "Music & Audio",
     isTrending: false,
     imageUrl:
       "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
   },
   {
-    id: "10",
-    title: "Paket Branding Lengkap: Logo, Kartu Nama & Social Media Kit",
-    sellerName: "Farah Quinn",
-    sellerUniversity: "UGM",
+    id: "15",
+    title: "Dashboard Visualisasi Data Tableau & Google Looker Studio",
+    sellerName: "Kevin Sanjaya",
+    sellerUniversity: "UPN Veteran Jawa Timur",
+    rating: 4.9,
+    reviewCount: 40,
+    price: "Rp 175rb",
+    category: "Data & AI",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "16",
+    title: "Voice Over (Pengisi Suara) Bahasa Indonesia & Inggris Jernih",
+    sellerName: "Intan Permata",
+    sellerUniversity: "Universitas Jember",
+    rating: 4.8,
+    reviewCount: 52,
+    price: "Rp 65rb",
+    category: "Music & Audio",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "17",
+    title: "Jasa SEO Off-Page, Riset Keyword & Audit Performa Website",
+    sellerName: "Rendy Setiawan",
+    sellerUniversity: "Universitas Sebelas Maret",
+    rating: 4.7,
+    reviewCount: 31,
+    price: "Rp 110rb",
+    category: "Digital Marketing",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "18",
+    title: "Illustrasi Vektor Wajah (Caricature & Line Art Gift)",
+    sellerName: "Fikri Syahputra",
+    sellerUniversity: "Universitas Trunojoyo Madura",
     rating: 5.0,
-    reviewCount: 56,
-    price: "Rp 750rb",
+    reviewCount: 68,
+    price: "Rp 40rb",
     category: "Graphics & Design",
     isTrending: true,
     imageUrl:
+      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "19",
+    title: "Pembuatan Website WordPress & Elementor Custom UMKM",
+    sellerName: "Lukman Hakim",
+    sellerUniversity: "Universitas Muhammadiyah Malang",
+    rating: 4.8,
+    reviewCount: 55,
+    price: "Rp 195rb",
+    category: "Programming & Tech",
+    isTrending: false,
+    imageUrl:
       "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
   },
+  {
+    id: "20",
+    title: "Animasi Explainer 2D Motion Graphics Promosi (15 Detik)",
+    sellerName: "Danang Prasetyo",
+    sellerUniversity: "Universitas Negeri Semarang",
+    rating: 4.9,
+    reviewCount: 43,
+    price: "Rp 220rb",
+    category: "Video & Animation",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+  },
 ];
+
+function fontTrend(val: boolean) {
+  return val;
+}
 
 const CATEGORIES = [
   "Semua Kategori",
@@ -347,7 +481,7 @@ function BrowseContent() {
                   Universitas
                 </h3>
                 <div className="space-y-3">
-                  {["Universitas Indonesia", "ITB", "UGM", "ITS", "Telkom University", "Universitas Airlangga", "IPB University"].map((univ) => (
+                  {["Universitas Trunojoyo Madura", "Universitas Indonesia", "ITB Bandung", "UGM Yogyakarta", "ITS Surabaya", "Universitas Brawijaya", "Universitas Diponegoro", "Universitas Airlangga", "Telkom University", "IPB University", "Universitas Jember", "Universitas Negeri Malang"].map((univ) => (
                     <label key={univ} className="flex items-center gap-3 cursor-pointer group">
                       <input
                         type="checkbox"
