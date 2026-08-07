@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -153,8 +154,9 @@ const CATEGORIES = [
   "Data & AI",
 ];
 
-export default function BrowsePage() {
+function BrowseContent() {
   const { profile } = useAuth();
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
   const [selectedUnivs, setSelectedUnivs] = useState<string[]>([]);
@@ -519,5 +521,13 @@ export default function BrowsePage() {
       <Footer />
       <MobileBottomNav active="search" />
     </>
+  );
+}
+
+export default function BrowsePage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Memuat...</div>}>
+      <BrowseContent />
+    </Suspense>
   );
 }
