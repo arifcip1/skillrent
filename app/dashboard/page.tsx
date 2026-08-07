@@ -101,10 +101,11 @@ export default function UserAccountDashboardPage() {
   const [payoutSuccess, setPayoutSuccess] = useState(false);
 
   // Redirect to login if not authenticated
-  if (!loading && !user) {
-    router.push("/login");
-    return null;
-  }
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [loading, user, router]);
 
   const isClient = profile?.role === "client";
   const displayName = profile?.full_name || (user?.email ? user.email.split("@")[0] : "Pengguna SkillRent");
