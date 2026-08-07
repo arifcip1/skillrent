@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import GigCard from "@/components/GigCard";
+import { useAuth } from "@/lib/AuthContext";
 
 const SAMPLE_GIGS = [
   {
@@ -16,53 +17,162 @@ const SAMPLE_GIGS = [
     rating: 4.9,
     reviewCount: 124,
     price: "Rp 250rb",
+    category: "Graphics & Design",
+    isTrending: true,
     imageUrl:
       "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "2",
-    title: "Desain Logo Maskot & Karakter Custom untuk Gaming",
+    title: "Desain Logo Maskot & Karakter Custom untuk Gaming & Brand",
     sellerName: "Siti Aminah",
     sellerUniversity: "ITB",
     rating: 4.8,
     reviewCount: 89,
     price: "Rp 400rb",
+    category: "Graphics & Design",
+    isTrending: true,
     imageUrl:
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "3",
-    title: "Paket Branding Lengkap: Logo, Kartu Nama & Social Media",
-    sellerName: "Rizky Hakim",
-    sellerUniversity: "Universitas Indonesia",
+    title: "Pengembangan Website Next.js & Tailwind Responsif Modern",
+    sellerName: "Bagas Wirawan",
+    sellerUniversity: "ITS",
     rating: 5.0,
-    reviewCount: 42,
-    price: "Rp 750rb",
+    reviewCount: 78,
+    price: "Rp 1,5 Jt",
+    category: "Programming & Tech",
+    isTrending: true,
     imageUrl:
-      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "4",
-    title: "Logo Futuristik & Cyberpunk untuk Brand Digital",
+    title: "Jasa Pembuatan Aplikasi Mobile React Native iOS & Android",
+    sellerName: "Rizky Hakim",
+    sellerUniversity: "Universitas Indonesia",
+    rating: 4.9,
+    reviewCount: 42,
+    price: "Rp 2,8 Jt",
+    category: "Programming & Tech",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "5",
+    title: "Kelola Instagram & TikTok Professional (30 Feed + 10 Reels)",
+    sellerName: "Clara Amanda",
+    sellerUniversity: "Universitas Airlangga",
+    rating: 4.7,
+    reviewCount: 95,
+    price: "Rp 850rb",
+    category: "Digital Marketing",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "6",
+    title: "Editing Video Commercial TikTok, Reels & Shorts Engaging",
+    sellerName: "Faris Al-Fatih",
+    sellerUniversity: "Telkom University",
+    rating: 4.9,
+    reviewCount: 110,
+    price: "Rp 350rb",
+    category: "Video & Animation",
+    isTrending: true,
+    imageUrl:
+      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "7",
+    title: "Penulisan Artikel SEO, Copywriting Landing Page & Jurnal",
+    sellerName: "Nabila Putri",
+    sellerUniversity: "UGM",
+    rating: 4.8,
+    reviewCount: 64,
+    price: "Rp 150rb",
+    category: "Writing & Translation",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "8",
+    title: "Analisis Data Statistik SPSS, R & Visualisasi Dashboard Tableau",
+    sellerName: "Dewi Lestari",
+    sellerUniversity: "IPB University",
+    rating: 4.6,
+    reviewCount: 38,
+    price: "Rp 500rb",
+    category: "Data & AI",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "9",
+    title: "Jingle Musik Brand, Sound Design & Audio Editing Podcast",
+    sellerName: "Aris Munandar",
+    sellerUniversity: "ISI Yogyakarta",
+    rating: 4.9,
+    reviewCount: 27,
+    price: "Rp 600rb",
+    category: "Music & Audio",
+    isTrending: false,
+    imageUrl:
+      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "10",
+    title: "Paket Branding Lengkap: Logo, Kartu Nama & Social Media Kit",
     sellerName: "Farah Quinn",
     sellerUniversity: "UGM",
-    rating: 4.7,
+    rating: 5.0,
     reviewCount: 56,
-    price: "Rp 300rb",
+    price: "Rp 750rb",
+    category: "Graphics & Design",
+    isTrending: true,
     imageUrl:
-      "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
+const CATEGORIES = [
+  "Semua Kategori",
+  "Trending 🔥",
+  "Graphics & Design",
+  "Programming & Tech",
+  "Digital Marketing",
+  "Video & Animation",
+  "Writing & Translation",
+  "Music & Audio",
+  "Data & AI",
+];
+
 export default function BrowsePage() {
+  const { profile } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
   const [selectedUnivs, setSelectedUnivs] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>("Semua Tipe");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [hasActiveBrief, setHasActiveBrief] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("skillrent_active_brief");
+      if (saved) setHasActiveBrief(true);
+    }
+  }, []);
 
   const handleResetFilters = () => {
     setSearchQuery("");
+    setSelectedCategory("Semua Kategori");
     setSelectedUnivs([]);
     setSelectedType("Semua Tipe");
     setMinPrice("");
@@ -83,7 +193,17 @@ export default function BrowsePage() {
       const matchTitle = gig.title.toLowerCase().includes(q);
       const matchSeller = gig.sellerName.toLowerCase().includes(q);
       const matchUniv = gig.sellerUniversity.toLowerCase().includes(q);
-      if (!matchTitle && !matchSeller && !matchUniv) return false;
+      const matchCategory = gig.category.toLowerCase().includes(q);
+      if (!matchTitle && !matchSeller && !matchUniv && !matchCategory) return false;
+    }
+
+    // Category Filter
+    if (selectedCategory !== "Semua Kategori") {
+      if (selectedCategory === "Trending 🔥") {
+        if (!gig.isTrending) return false;
+      } else if (gig.category !== selectedCategory) {
+        return false;
+      }
     }
 
     // University Filter
@@ -101,9 +221,9 @@ export default function BrowsePage() {
     }
 
     // Price Filter
-    const numericPrice = parseInt(gig.price.replace(/[^0-9]/g, "")) * 1000;
-    if (minPrice && numericPrice < parseInt(minPrice)) return false;
-    if (maxPrice && numericPrice > parseInt(maxPrice)) return false;
+    const numericPrice = parseFloat(gig.price.replace(/[^0-9,.]/g, "").replace(",", ".")) * (gig.price.includes("Jt") ? 1000000 : 1000);
+    if (minPrice && numericPrice < parseFloat(minPrice)) return false;
+    if (maxPrice && numericPrice > parseFloat(maxPrice)) return false;
 
     return true;
   });
@@ -113,93 +233,125 @@ export default function BrowsePage() {
       <Navbar />
 
       <main className="max-w-[1280px] mx-auto px-4 md:px-12 py-8 min-h-screen">
-        {/* Header Section */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1
-                className="text-[32px] font-bold leading-[40px] mb-2"
-                style={{
-                  color: "#1a1c1e",
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {searchQuery ? `Hasil Pencarian untuk "${searchQuery}"` : "Telusuri Layanan Bakat Mahasiswa"}
-              </h1>
-              <p className="text-[16px] leading-[24px]" style={{ color: "#5d3f3c" }}>
-                Dapatkan layanan profesional karya mahasiswa berbakat dari universitas ternama. ({filteredGigs.length} Jasa Ditemukan)
-              </p>
-            </div>
-
-            {/* Quick Search Bar & Reset */}
-            <div className="w-full md:w-auto flex items-center gap-3">
-              <div className="relative w-full md:w-80">
-                <span
-                  className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px]"
-                  style={{ color: "#5d3f3c" }}
-                >
-                  search
-                </span>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari jasa, kategori, atau nama..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl text-[14px] outline-none border transition-all"
-                  style={{
-                    background: "#ffffff",
-                    borderColor: "#e7bdb8",
-                    color: "#1a1c1e",
-                  }}
-                />
-              </div>
-
-              {(searchQuery || selectedUnivs.length > 0 || minPrice || maxPrice || selectedType !== "Semua Tipe") && (
-                <button
-                  onClick={handleResetFilters}
-                  className="px-4 py-2.5 rounded-xl border text-[13px] font-semibold flex items-center gap-1.5 shrink-0 transition-colors hover:bg-gray-100"
-                  style={{ borderColor: "#b90014", color: "#b90014" }}
-                >
-                  <span className="material-symbols-outlined text-[16px]">restart_alt</span>
-                  Reset Filter
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* AI Matching Alert */}
+        {/* Header Banner: Welcome Back or Personalized Greeting */}
         <div
-          className="rounded-2xl p-4 mb-10 flex items-center gap-4 border"
+          className="rounded-2xl p-6 md:p-8 mb-8 border flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm"
           style={{
-            background: "#d8e2ff",
-            borderColor: "rgba(0, 87, 185, 0.2)",
-            boxShadow: "0 0 20px rgba(0, 87, 185, 0.15)",
+            background: "linear-gradient(135deg, #ffffff 0%, #faf9fb 100%)",
+            borderColor: "#e7bdb8",
           }}
         >
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "#0057b9", color: "#ffffff" }}
-          >
-            <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-              auto_awesome
+          <div className="space-y-2">
+            <div className="flex items-center gap-2" style={{ color: "#b90014" }}>
+              <span className="material-symbols-outlined text-[24px]">waving_hand</span>
+              <span className="text-[12px] font-bold uppercase tracking-wider">
+                PLATFORM TALENTA MAHASISWA
+              </span>
+            </div>
+            <h1
+              className="text-[28px] md:text-[36px] font-bold"
+              style={{
+                color: "#1a1c1e",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              {profile?.full_name ? `Welcome back, ${profile.full_name}! 👋` : "Telusuri Layanan Bakat Mahasiswa"}
+            </h1>
+            <p className="text-[15px] leading-6 max-w-2xl" style={{ color: "#5d3f3c" }}>
+              Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia. ({filteredGigs.length} Jasa Tersedia)
+            </p>
+          </div>
+
+          {hasActiveBrief ? (
+            <Link
+              href="/recommendations"
+              className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95"
+              style={{ background: "#0057b9" }}
+            >
+              <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+              Lihat Rekomendasi Brief AI Anda
+            </Link>
+          ) : (
+            <Link
+              href="/brief"
+              className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95"
+              style={{ background: "#b90014" }}
+            >
+              <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+              Buat Brief Proyek via AI
+            </Link>
+          )}
+        </div>
+
+        {/* Quick Search & Filter Toolbar */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="relative flex-1 max-w-md">
+            <span
+              className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[20px]"
+              style={{ color: "#5d3f3c" }}
+            >
+              search
             </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Cari jasa, kata kunci, atau nama mahasiswa..."
+              className="w-full pl-10 pr-4 py-3 rounded-xl text-[14px] outline-none border transition-all"
+              style={{
+                background: "#ffffff",
+                borderColor: "#e7bdb8",
+                color: "#1a1c1e",
+              }}
+            />
           </div>
-          <div>
-            <p className="text-[14px] font-bold" style={{ color: "#001a41" }}>
-              AI Rekomendasi
-            </p>
-            <p className="text-[14px]" style={{ color: "#004493" }}>
-              Kami merekomendasikan mahasiswa terverifikasi ini berdasarkan kriteria Anda.
-            </p>
-          </div>
+
+          {(searchQuery || selectedCategory !== "Semua Kategori" || selectedUnivs.length > 0 || minPrice || maxPrice || selectedType !== "Semua Tipe") && (
+            <button
+              onClick={handleResetFilters}
+              className="px-4 py-2.5 rounded-xl border text-[13px] font-semibold flex items-center gap-1.5 shrink-0 transition-colors hover:bg-gray-100"
+              style={{ borderColor: "#b90014", color: "#b90014" }}
+            >
+              <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+              Reset Semua Filter
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row gap-8 items-start">
           {/* Sidebar Filters */}
           <aside className="w-full md:w-64 shrink-0">
             <div className="space-y-8 sticky top-24">
+              {/* Filter Section: Category */}
+              <div>
+                <h3
+                  className="text-[14px] font-semibold uppercase tracking-wider mb-4"
+                  style={{ color: "#5d3f3c" }}
+                >
+                  Kategori Layanan
+                </h3>
+                <div className="space-y-1">
+                  {CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className="w-full text-left px-3 py-2 rounded-xl text-[14px] font-medium transition-all flex items-center justify-between hover:bg-[#efedf0]"
+                      style={
+                        selectedCategory === cat
+                          ? { background: "#b90014", color: "#ffffff", fontWeight: 700 }
+                          : { color: "#1a1c1e" }
+                      }
+                    >
+                      <span>{cat}</span>
+                      {selectedCategory === cat && (
+                        <span className="material-symbols-outlined text-[16px]">check</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Filter Section: University */}
               <div>
                 <h3
@@ -209,7 +361,7 @@ export default function BrowsePage() {
                   Universitas
                 </h3>
                 <div className="space-y-3">
-                  {["Universitas Indonesia", "ITB", "UGM"].map((univ) => (
+                  {["Universitas Indonesia", "ITB", "UGM", "ITS", "Telkom University", "Universitas Airlangga", "IPB University"].map((univ) => (
                     <label key={univ} className="flex items-center gap-3 cursor-pointer group">
                       <input
                         type="checkbox"
@@ -218,7 +370,7 @@ export default function BrowsePage() {
                         className="rounded w-5 h-5 accent-[#b90014] cursor-pointer"
                       />
                       <span
-                        className="text-[16px] group-hover:text-[#b90014] transition-colors"
+                        className="text-[14px] group-hover:text-[#b90014] transition-colors"
                         style={{ color: "#1a1c1e" }}
                       >
                         {univ}
