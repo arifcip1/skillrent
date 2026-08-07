@@ -4,8 +4,8 @@
 
 @import "tailwindcss";
 
-/* ─── Design Tokens (Tailwind v4 @theme) ──────────────────── */
-@theme {
+/* ─── Design Tokens ────────────────────────────────────────── */
+:root {
   /* Colors */
   --color-primary: #b90014;
   --color-primary-container: #e31b23;
