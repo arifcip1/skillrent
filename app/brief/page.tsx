@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
@@ -229,8 +230,32 @@ export default function BriefPage() {
 
 // ─── Step 2: Brief Result ─────────────────────────────────
 function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () => void }) {
+  const router = useRouter();
   const category = detectCategory(inputText);
   const budget = detectBudget(inputText);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleUseBriefAndSearch = () => {
+    setIsNavigating(true);
+
+    // Store generated brief in localStorage for AI recommendations matching
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        "skillrent_active_brief",
+        JSON.stringify({
+          inputText,
+          category,
+          budget,
+          deadline: detectDeadline(inputText),
+          createdAt: new Date().toISOString(),
+        })
+      );
+    }
+
+    setTimeout(() => {
+      router.push("/recommendations");
+    }, 600);
+  };
 
   return (
     <>
@@ -245,11 +270,11 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                   <span className="material-symbols-outlined text-[28px] sparkle-animation">auto_awesome</span>
                 </div>
                 <h1 className="text-[28px] md:text-[32px] font-bold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Tuliskan Ide Anda, Biar AI yang Menyusun Briefnya.
+                  Brief Terstruktur Berhasil Dibuat
                 </h1>
               </div>
               <p className="text-[16px] leading-6 max-w-2xl" style={{ color: "#5d3f3c" }}>
-                Brief Anda sudah diproses! Gunakan hasil di bawah untuk mencari mahasiswa terbaik.
+                Brief Anda sudah diproses oleh AI! Gunakan tombol di kanan bawah untuk langsung mencocokkan dengan mahasiswa terbaik.
               </p>
             </div>
 
@@ -267,10 +292,11 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
               <div className="absolute bottom-4 right-4 flex items-center gap-3">
                 <button
                   onClick={onBack}
-                  className="text-white p-3 rounded-2xl shadow-lg hover:translate-y-[-2px] active:scale-95 transition-all flex items-center justify-center"
+                  className="text-white px-4 py-2.5 rounded-2xl shadow-lg hover:translate-y-[-2px] active:scale-95 transition-all flex items-center justify-center gap-2 text-[14px] font-bold"
                   style={{ background: "#b90014" }}
                 >
-                  <span className="material-symbols-outlined">edit</span>
+                  <span className="material-symbols-outlined text-[18px]">edit</span>
+                  Edit Input
                 </button>
               </div>
             </div>
@@ -279,13 +305,14 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
             <div className="space-y-4">
               <h3 className="text-[14px] font-semibold uppercase tracking-wider flex items-center gap-2" style={{ color: "#5d3f3c" }}>
                 <span className="material-symbols-outlined text-[18px]">lightbulb</span>
-                Suggested Prompts
+                Saran Kategori Terkait
               </h3>
               <div className="flex flex-wrap gap-3">
                 {["Desain Logo", "Landing Page", "Konten Sosmed", "Edit Video Reels"].map((p) => (
                   <button
                     key={p}
-                    className="px-5 py-2.5 rounded-full border text-[14px] transition-all active:scale-95 hover:text-[#b90014]"
+                    onClick={() => router.push(`/browse?q=${encodeURIComponent(p)}`)}
+                    className="px-5 py-2.5 rounded-full border text-[14px] transition-all active:scale-95 hover:text-[#b90014] hover:border-[#b90014]"
                     style={{ background: "#efedf0", borderColor: "rgba(231,189,184,0.3)", color: "#5d3f3c" }}
                   >
                     {p}
@@ -321,7 +348,7 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                     <span className="material-symbols-outlined text-[18px]">info</span> Ringkasan Proyek
                   </h4>
                   <p className="text-[16px] leading-6" style={{ color: "#5d3f3c" }}>
-                    Pembuatan identitas visual brand untuk kebutuhan {category.toLowerCase()} yang menyasar pasar mahasiswa dan profesional muda.
+                    Pembuatan kebutuhan {category.toLowerCase()} yang disesuaikan dengan brief Anda untuk eksekusi oleh mahasiswa spesialis.
                   </p>
                 </div>
 
@@ -331,7 +358,7 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                     <span className="material-symbols-outlined text-[18px]">format_list_bulleted</span> Ruang Lingkup Pekerjaan
                   </h4>
                   <ul className="space-y-2">
-                    {["Desain utama dan varian alternatif.", "Panduan palet warna dan tipografi.", "Mockup dan presentasi final."].map((item) => (
+                    {["Drafting & konsep awal sesuai brief.", "Panduan warna, tipografi, dan aset visual.", "Revisi bertahap & final handover."].map((item) => (
                       <li key={item} className="flex items-start gap-3 text-[14px] leading-5" style={{ color: "#5d3f3c" }}>
                         <span className="material-symbols-outlined text-[18px]" style={{ color: "#b90014" }}>check_circle</span>
                         {item}
@@ -346,7 +373,7 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                     <h4 className="text-[14px] font-semibold flex items-center gap-2" style={{ color: "#b90014" }}>
                       <span className="material-symbols-outlined text-[18px]">calendar_today</span> Estimasi Tenggat
                     </h4>
-                    <p className="text-[24px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <p className="text-[20px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       {detectDeadline(inputText)}
                     </p>
                     <p className="text-[12px] font-medium" style={{ color: "#926e6b" }}>Berdasarkan input Anda</p>
@@ -355,7 +382,7 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                     <h4 className="text-[14px] font-semibold flex items-center gap-2" style={{ color: "#b90014" }}>
                       <span className="material-symbols-outlined text-[18px]">payments</span> Estimasi Budget
                     </h4>
-                    <p className="text-[24px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <p className="text-[20px] font-semibold" style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       {budget}
                     </p>
                     <p className="text-[12px] font-medium" style={{ color: "#926e6b" }}>Fixed Price</p>
@@ -368,27 +395,32 @@ function BriefResultStep({ inputText, onBack }: { inputText: string; onBack: () 
                     <span className="material-symbols-outlined text-[18px]">package_2</span> Deliverables yang Diharapkan
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {["File Vektor (.AI, .EPS)", "Export (.PNG, .JPG)", "Brand Guideline PDF"].map((d) => (
+                    {["File Master Vektor", "Export HQ (PNG, JPG)", "Dokumentasi Final"].map((d) => (
                       <span key={d} className="px-3 py-1 rounded-lg text-[12px] font-medium" style={{ background: "#efedf0", color: "#5d3f3c" }}>{d}</span>
                     ))}
-                  </div>
-                </div>
-
-                {/* Tip */}
-                <div className="p-4 rounded-2xl border flex gap-4" style={{ background: "#ebf5ff", borderColor: "rgba(0,87,185,0.2)" }}>
-                  <span className="material-symbols-outlined" style={{ color: "#0057b9" }}>tips_and_updates</span>
-                  <div>
-                    <p className="text-[12px] font-bold" style={{ color: "#0057b9" }}>Tips Mahasiswa</p>
-                    <p className="text-[13px]" style={{ color: "#004493" }}>Sertakan detail gaya visual yang Anda sukai agar mahasiswa dari jurusan DKV bisa memahami visi Anda lebih baik.</p>
                   </div>
                 </div>
               </div>
 
               {/* Footer action */}
               <div className="p-6 border-t" style={{ background: "#ffffff", borderTopColor: "rgba(231,189,184,0.2)" }}>
-                <button className="w-full text-white py-4 rounded-2xl text-[14px] font-semibold flex items-center justify-center gap-3 hover:shadow-xl hover:-translate-y-[2px] active:scale-[0.98] transition-all" style={{ background: "#b90014" }}>
-                  Gunakan Brief Ini & Cari Mahasiswa
-                  <span className="material-symbols-outlined">arrow_forward</span>
+                <button
+                  onClick={handleUseBriefAndSearch}
+                  disabled={isNavigating}
+                  className="w-full text-white py-4 rounded-2xl text-[14px] font-semibold flex items-center justify-center gap-3 hover:shadow-xl hover:-translate-y-[2px] active:scale-[0.98] transition-all disabled:opacity-75"
+                  style={{ background: "#b90014" }}
+                >
+                  {isNavigating ? (
+                    <>
+                      <span className="animate-spin material-symbols-outlined text-[18px]">refresh</span>
+                      Mencari Mahasiswa Terverifikasi AI...
+                    </>
+                  ) : (
+                    <>
+                      Gunakan Brief Ini &amp; Cari Mahasiswa
+                      <span className="material-symbols-outlined">arrow_forward</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>

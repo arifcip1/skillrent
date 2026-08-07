@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -62,6 +62,18 @@ export default function RecommendationsPage() {
   const [selectedUniv, setSelectedUniv] = useState("Semua Universitas");
   const [minRating, setMinRating] = useState("4.5+");
   const [onlyVerified, setOnlyVerified] = useState(true);
+  const [activeBrief, setActiveBrief] = useState<{ inputText?: string; category?: string; budget?: string; deadline?: string } | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("skillrent_active_brief");
+      if (saved) {
+        try {
+          setActiveBrief(JSON.parse(saved));
+        } catch {}
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -85,18 +97,21 @@ export default function RecommendationsPage() {
                 className="text-[24px] font-bold"
                 style={{ color: "#1a1c1e", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Rekomendasi Berdasarkan Brief
+                Rekomendasi Berdasarkan Brief AI
               </h1>
             </div>
-            <p className="text-[20px] font-semibold" style={{ color: "#40161c" }}>
-              &quot;Desain Logo &amp; Identitas Brand Startup EduTech&quot;
+            <p className="text-[20px] font-semibold max-w-2xl line-clamp-2" style={{ color: "#40161c" }}>
+              {activeBrief?.inputText ? `"${activeBrief.inputText}"` : '"Desain Logo & Identitas Brand Startup EduTech"'}
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
               <span className="px-3 py-1 rounded-full text-[12px] font-medium" style={{ background: "#efedf0", color: "#5d3f3c" }}>
-                Budget: Rp 5jt - 10jt
+                Budget: {activeBrief?.budget || "Rp 4.500.000"}
               </span>
               <span className="px-3 py-1 rounded-full text-[12px] font-medium" style={{ background: "#efedf0", color: "#5d3f3c" }}>
-                Deadline: 2 Minggu
+                Deadline: {activeBrief?.deadline || "2 Minggu"}
+              </span>
+              <span className="px-3 py-1 rounded-full text-[12px] font-medium" style={{ background: "#ebf5ff", color: "#0057b9" }}>
+                Kategori: {activeBrief?.category || "Graphic Design"}
               </span>
               <span className="px-3 py-1 rounded-full text-[12px] font-medium" style={{ background: "#efedf0", color: "#5d3f3c" }}>
                 Style: Modern, Energetic
