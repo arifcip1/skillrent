@@ -259,65 +259,71 @@ export default function BrowsePage() {
               {profile?.full_name ? `Welcome back, ${profile.full_name}! 👋` : "Telusuri Layanan Bakat Mahasiswa"}
             </h1>
             <p className="text-[15px] leading-6 max-w-2xl" style={{ color: "#5d3f3c" }}>
-              Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia. ({filteredGigs.length} Jasa Tersedia)
+              Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia.
             </p>
           </div>
 
-          {hasActiveBrief ? (
-            <Link
-              href="/recommendations"
-              className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95"
-              style={{ background: "#0057b9" }}
-            >
-              <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-              Lihat Rekomendasi Brief AI Anda
-            </Link>
-          ) : (
-            <Link
-              href="/brief"
-              className="px-5 py-3 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95"
-              style={{ background: "#b90014" }}
-            >
-              <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-              Buat Brief Proyek via AI
-            </Link>
-          )}
+          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
+            {/* Search Bar in Header */}
+            <div className="relative w-full sm:w-64 md:w-72">
+              <span
+                className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px]"
+                style={{ color: "#5d3f3c" }}
+              >
+                search
+              </span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari jasa / mahasiswa..."
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl text-[13px] outline-none border transition-all shadow-sm"
+                style={{
+                  background: "#ffffff",
+                  borderColor: "#e7bdb8",
+                  color: "#1a1c1e",
+                }}
+              />
+            </div>
+
+            {/* AI Brief Button */}
+            {hasActiveBrief ? (
+              <Link
+                href="/recommendations"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
+                style={{ background: "#0057b9" }}
+              >
+                <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+                Rekomendasi Brief AI
+              </Link>
+            ) : (
+              <Link
+                href="/brief"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-white font-semibold text-[13px] flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 whitespace-nowrap"
+                style={{ background: "#b90014" }}
+              >
+                <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
+                Buat Brief AI
+              </Link>
+            )}
+          </div>
         </div>
 
-        {/* Quick Search & Filter Toolbar */}
-        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="relative flex-1 max-w-md">
-            <span
-              className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[20px]"
-              style={{ color: "#5d3f3c" }}
-            >
-              search
+        {/* Filter Reset Status Bar (if any filter is active) */}
+        {(searchQuery || selectedCategory !== "Semua Kategori" || selectedUnivs.length > 0 || minPrice || maxPrice || selectedType !== "Semua Tipe") && (
+          <div className="mb-6 flex items-center justify-between p-3.5 rounded-xl bg-white border shadow-sm" style={{ borderColor: "#e7bdb8" }}>
+            <span className="text-[13px] font-semibold" style={{ color: "#5d3f3c" }}>
+              Menampilkan {filteredGigs.length} jasa berdasarkan filter Anda
             </span>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari jasa, kata kunci, atau nama mahasiswa..."
-              className="w-full pl-10 pr-4 py-3 rounded-xl text-[14px] outline-none border transition-all"
-              style={{
-                background: "#ffffff",
-                borderColor: "#e7bdb8",
-                color: "#1a1c1e",
-              }}
-            />
-          </div>
-
-          {(searchQuery || selectedCategory !== "Semua Kategori" || selectedUnivs.length > 0 || minPrice || maxPrice || selectedType !== "Semua Tipe") && (
             <button
               onClick={handleResetFilters}
-              className="px-4 py-2.5 rounded-xl border text-[13px] font-semibold flex items-center gap-1.5 shrink-0 transition-colors hover:bg-gray-100"
-              style={{ borderColor: "#b90014", color: "#b90014" }}
+              className="text-[12px] font-bold text-[#b90014] hover:underline flex items-center gap-1"
             >
-              <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+              <span className="material-symbols-outlined text-[14px]">restart_alt</span>
               Reset Semua Filter
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="flex flex-col md:flex-row gap-8 items-start">
           {/* Sidebar Filters */}
