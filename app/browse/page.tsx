@@ -258,7 +258,7 @@ function BrowseContent() {
                 letterSpacing: "-0.01em",
               }}
             >
-              {profile?.full_name ? `Welcome back, ${profile.full_name}! 👋` : "Telusuri Layanan Bakat Mahasiswa"}
+              {profile?.full_name ? `Welcome back, ${profile.full_name}!` : "Telusuri Layanan Bakat Mahasiswa"}
             </h1>
             <p className="text-[13px] leading-5 max-w-xl" style={{ color: "#5d3f3c" }}>
               Dapatkan layanan profesional karya mahasiswa terverifikasi dari kampus ternama seluruh Indonesia.

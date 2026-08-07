@@ -59,11 +59,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (!loading && profile) {
-      if (profile.role === "client") {
-        router.replace("/browse");
-      } else {
-        router.replace("/dashboard");
-      }
+      router.replace("/browse");
     }
   }, [profile, loading, router]);
 

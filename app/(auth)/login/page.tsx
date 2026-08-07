@@ -71,10 +71,8 @@ export default function LoginPage() {
             localStorage.removeItem("skillrent_search_history");
           }
 
-          const targetRoute = userRole === "client" ? "/browse" : "/dashboard";
-          const routeMsg = userRole === "client" 
-            ? "Login berhasil! Mengarahkan ke Telusuri Jasa..." 
-            : "Login berhasil! Mengarahkan ke Dashboard...";
+          const targetRoute = "/browse";
+          const routeMsg = "Login berhasil! Mengarahkan ke Telusuri Jasa...";
 
           setSuccessMsg(routeMsg);
           setTimeout(() => {

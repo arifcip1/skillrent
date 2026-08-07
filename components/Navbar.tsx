@@ -44,7 +44,7 @@ function NavbarContent() {
         {/* Brand + Nav Links */}
         <div className="flex items-center gap-6 md:gap-8">
           <Link
-            href={profile ? (profile.role === "client" ? "/browse" : "/dashboard") : "/"}
+            href={user ? "/browse" : "/"}
             className="text-[24px] font-bold leading-8 font-headline shrink-0"
             style={{ color: "#b90014", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
